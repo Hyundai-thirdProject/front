@@ -53,7 +53,8 @@
                 android:layout_marginBottom="20dp"
                 android:textSize="15sp"
                 android:text="오전"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
 
             <TableRow
                 android:layout_width="match_parent"
