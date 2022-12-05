@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name = "backgroundColor">#F9EEDB</color>
     <color name="main">#A2B38B</color>
+    <color name="main_nav_icon">#C35B17</color>
 
 </resources>

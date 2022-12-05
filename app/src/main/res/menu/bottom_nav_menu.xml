@@ -4,22 +4,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/searchFragment"
+        android:id="@+id/loginFragment"
         android:icon="@drawable/ic_login_24"
-        android:title="LOGIN" />
+        android:title="LOGIN"
+        app:showAsAction="always"/>
 
 
 
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home_24"
-        android:enabled="true"
         android:title="HOME"
+        app:showAsAction="always"
+        android:enabled="true"
+
+        tools:ignore="AlwaysShowAction"
          />
     <item
-        android:id="@+id/lookFragment"
+        android:id="@+id/mypageFragment"
         android:icon="@drawable/ic_my_page_24"
-
+        app:showAsAction="always"
         android:title="MYPAGE" />
 
 
