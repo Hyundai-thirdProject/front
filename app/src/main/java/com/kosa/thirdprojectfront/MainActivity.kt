@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kosa.thirdprojectfront.databinding.ActivityMainBinding
 import java.io.InterruptedIOException
@@ -39,6 +40,9 @@ class MainActivity : AppCompatActivity() {
     // GPS 서비스 요청 시 필요한 런처
     lateinit var  getGPSPermissionLauncher: ActivityResultLauncher<Intent>
 
+    // 위도경도 - 사용하는 fragment에 선언하기??
+    lateinit var locationProvider:LocationProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         // 권한 확인 (gps)
         checkAllPermissions()
+        checkDistance()
     }
 
 
@@ -198,6 +203,30 @@ class MainActivity : AppCompatActivity() {
             // 종료
         })
         builder.create().show() // 다이얼로그 생성
+    }
+
+    // 거리 구하기
+    private fun checkDistance(){
+        locationProvider = LocationProvider(this@MainActivity)
+
+        val latitude:Double = locationProvider.getLocationLatitude() //위도
+        val longitude:Double = locationProvider.getLocationLongitude()  //경도
+        // db에서 값 가져오기
+        //더현대 서울 37.525, 126.928
+        val distance = DistanceManager.getDistance(latitude,longitude,37.525,126.928)
+        if(distance<500){
+            // 지점 예약가능
+            Toast.makeText(this@MainActivity,
+            "${distance}M 차이납니다",
+                Toast.LENGTH_LONG).show()
+        }else{
+            // 예약못하게 막기
+            Toast.makeText(this@MainActivity,
+                "${distance}M 차이납니다 예약이 불가능합니다",
+                Toast.LENGTH_LONG).show()
+        }
+
+
     }
 
 
