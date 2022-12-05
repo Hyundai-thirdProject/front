@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9EEDB"
+    android:animateLayoutChanges="true"
     tools:context=".ReservationActivity">
+    <!-- expandable 처리위한 animate -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sign_top_bar"
@@ -91,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background=""
+
                     android:layout_weight="1"/>
 
             </TableRow>
@@ -296,21 +298,21 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background=""/>
+                    />
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background=""/>
+                    />
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background=""/>
+                    />
             </TableRow>
 
             <TextView
@@ -325,6 +327,7 @@
                 android:textStyle="bold"/>
 
             <Button
+                android:id="@+id/btn_expand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -333,7 +336,76 @@
 
                 android:textSize="16sp"/>
 
+            <LinearLayout
+                android:id="@+id/expand_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/hyundai"/>
 
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="ads"/>
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
@@ -342,10 +414,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="100dp"
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/button_background_color"
+                android:background="@dra wable/button_background_color"
                 android:text="예약하기" />
-
-
 
 
         </LinearLayout>
