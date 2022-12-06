@@ -20,7 +20,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kosa.thirdprojectfront.databinding.ActivityMainBinding
 import java.io.InterruptedIOException
@@ -57,8 +56,23 @@ class MainActivity : AppCompatActivity() {
         checkDistance()
     }
 
+    // 프래그먼트 안의 버튼 클릭으로 프래그먼트 전환
+    open fun onFragmentChange(index: Int) {
+        if (index == 0) {
+            supportFragmentManager.beginTransaction().replace(R.id.createQRFrameLayout, HomeFragment())
+                .commit()
+        } else if (index == 1) {
+            supportFragmentManager.beginTransaction().replace(R.id.createQRFrameLayout, HomeFragment())
+                .commit()
+        } else if (index == 2) {
+            supportFragmentManager.beginTransaction().replace(R.id.emptyQRFrameLayout, HomeFragment())
+                .commit()
+        }
+    }
 
     private fun initBottomNavigation() {
+
+        var text = "2022-12-06"
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.mainFrameLayout, HomeFragment())
@@ -81,12 +95,21 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.mypageFragment -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainFrameLayout, MyPageFragment())
-                        .commitAllowingStateLoss()
-                    return@setOnItemSelectedListener true
+                    if (text != ""){
+                        Log.d("CreateQR", "실행중")
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.mainFrameLayout, CreateQRFragment())
+                            .commitAllowingStateLoss()
+                        return@setOnItemSelectedListener true
+                    }
+                    else {
+                        Log.d("EmptyQR", "실행중")
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.mainFrameLayout, EmptyQRFragment())
+                            .commitAllowingStateLoss()
+                        return@setOnItemSelectedListener true
+                    }
                 }
-
             }
             false
         }
@@ -217,7 +240,7 @@ class MainActivity : AppCompatActivity() {
         if(distance<500){
             // 지점 예약가능
             Toast.makeText(this@MainActivity,
-            "${distance}M 차이납니다",
+                "${distance}M 차이납니다",
                 Toast.LENGTH_LONG).show()
         }else{
             // 예약못하게 막기
@@ -225,10 +248,6 @@ class MainActivity : AppCompatActivity() {
                 "${distance}M 차이납니다 예약이 불가능합니다",
                 Toast.LENGTH_LONG).show()
         }
-
-
     }
-
-
 
 }
