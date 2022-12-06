@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
         // 권한 확인 (gps)
         checkAllPermissions()
-        checkDistance()
+        //checkDistance()
     }
 
     // 프래그먼트 안의 버튼 클릭으로 프래그먼트 전환
@@ -69,6 +69,9 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         } else if (index == 3) {
             supportFragmentManager.beginTransaction().replace(R.id.fr_login, HomeFragment())
+                .commit()
+        } else if (index == 4) {
+            supportFragmentManager.beginTransaction().replace(R.id.home_main, ReservationFragment())
                 .commit()
         }
     }
@@ -236,7 +239,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 거리 구하기
-    fun checkDistance(){
+    fun checkDistance() : Boolean{
         locationProvider = LocationProvider(this@MainActivity)
 
         val latitude:Double = locationProvider.getLocationLatitude() //위도
@@ -250,11 +253,13 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this@MainActivity,
                 "${distance}M 차이납니다",
                 Toast.LENGTH_SHORT).show()
+            return true
         }else{
             // 예약못하게 막기
             Toast.makeText(this@MainActivity,
                 "${distance}M 차이납니다 예약이 불가능합니다",
                 Toast.LENGTH_SHORT).show()
+            return false
         }
     }
 
