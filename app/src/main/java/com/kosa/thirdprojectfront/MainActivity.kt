@@ -120,8 +120,10 @@ class MainActivity : AppCompatActivity() {
     fun checkAllPermissions() {
         // GPS 켜져있는지 확인
         if (!isLocationServicesAvailable()) {
+            Log.d("permission","isLocationServicesAvailable 사용불가라 설정 옵션열기")
             showDialogForLocationServiceSetting();
         } else { // 런타임 앱 권한이 허용되어있는지 확인
+            Log.d("permission","isLocationServicesAvailable 사용가능 -> 런타임 권한확인")
             isRunTimePermissionsGranted();
         }
     }
@@ -130,8 +132,9 @@ class MainActivity : AppCompatActivity() {
     // GPS 켜져있는지 확인
     fun isLocationServicesAvailable(): Boolean {
         val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-        return(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-
+        return(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+        // 네트워크 권한 추가
     }
 
     // 위치 권한 가지고 있는지 체크 fun
@@ -147,6 +150,7 @@ class MainActivity : AppCompatActivity() {
         // 둘중에 권한이 하나도 없으면
         if(hasFineLocationPermission != PackageManager.PERMISSION_GRANTED ||
             hasCoarseLocationPermission !=PackageManager.PERMISSION_GRANTED){
+            Log.d("permission","location 권한 둘중에 하나라도 없다")
             // 권한 요청하기
             ActivityCompat.requestPermissions(this@MainActivity,
                 REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
@@ -161,7 +165,7 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if(requestCode == PERMISSIONS_REQUEST_CODE &&
             grantResults.size==REQUIRED_PERMISSIONS.size){
-
+            Log.d("permission","코드 일치, 개수일치?")
             // 요청 코드가 PERMISSIONS_REQUEST_CODE로 일치하고
             // 요청한 퍼미션 개수만큼 수신되었으면
             var checkResult = true
@@ -229,11 +233,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 거리 구하기
-    private fun checkDistance(){
+    fun checkDistance(){
         locationProvider = LocationProvider(this@MainActivity)
 
         val latitude:Double = locationProvider.getLocationLatitude() //위도
         val longitude:Double = locationProvider.getLocationLongitude()  //경도
+        Log.d("location","위도 : ${latitude}   경도 : ${longitude}")
         // db에서 값 가져오기
         //더현대 서울 37.525, 126.928
         val distance = DistanceManager.getDistance(latitude,longitude,37.525,126.928)
@@ -241,12 +246,12 @@ class MainActivity : AppCompatActivity() {
             // 지점 예약가능
             Toast.makeText(this@MainActivity,
                 "${distance}M 차이납니다",
-                Toast.LENGTH_LONG).show()
+                Toast.LENGTH_SHORT).show()
         }else{
             // 예약못하게 막기
             Toast.makeText(this@MainActivity,
                 "${distance}M 차이납니다 예약이 불가능합니다",
-                Toast.LENGTH_LONG).show()
+                Toast.LENGTH_SHORT).show()
         }
     }
 
