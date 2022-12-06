@@ -10,5 +10,8 @@
     <color name = "backgroundColor">#F9EEDB</color>
     <color name="main">#A2B38B</color>
     <color name="main_nav_icon">#C35B17</color>
-
+    <color name="colorPrimary">#FFC107</color>
+    <color name="colorPrimaryDark">#FF7043</color>
+    <color name="colorAccent">#FFAB40</color>
+    <color name="colorGray">#8C8C8C</color>
 </resources>

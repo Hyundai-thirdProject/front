@@ -67,6 +67,9 @@ class MainActivity : AppCompatActivity() {
         } else if (index == 2) {
             supportFragmentManager.beginTransaction().replace(R.id.emptyQRFrameLayout, HomeFragment())
                 .commit()
+        } else if (index == 3) {
+            supportFragmentManager.beginTransaction().replace(R.id.fr_login, HomeFragment())
+                .commit()
         }
     }
 
