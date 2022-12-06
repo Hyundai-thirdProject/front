@@ -47,6 +47,9 @@ class HomeFragment : Fragment() {
         val thread = Thread(PagerRunnable())
         thread.start()
 
+        binding.loginSignInBtn.setOnClickListener {
+            (activity as MainActivity).checkDistance()
+        }
 
         return binding.root
     }
