@@ -32,7 +32,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
-        android:id="@+id/sign_up_id_et"
+        android:id="@+id/join_email"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="150dp"
@@ -47,7 +47,7 @@
         tools:layout_editor_absoluteX="55dp" />
 
     <EditText
-        android:id="@+id/sign_up_password_et"
+        android:id="@+id/join_password"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="60dp"
@@ -56,13 +56,13 @@
         android:textColor="@color/black"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/sign_up_id_et"
+        app:layout_constraintTop_toBottomOf="@id/join_email"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteX="55dp" />
 
     <EditText
-        android:id="@+id/sign_up_pwd_check"
+        android:id="@+id/join_pwck"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="60dp"
@@ -71,13 +71,13 @@
         android:textColor="@color/black"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/sign_up_password_et"
+        app:layout_constraintTop_toBottomOf="@id/join_password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteX="55dp" />
 
     <EditText
-        android:id="@+id/sign_up_phone_number_et"
+        android:id="@+id/join_phone"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="60dp"
@@ -86,13 +86,13 @@
         android:textColor="@color/black"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/sign_up_pwd_check"
+        app:layout_constraintTop_toBottomOf="@id/join_pwck"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteX="55dp" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/sign_up_finsh_btn"
+        android:id="@+id/join_button"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
@@ -105,7 +105,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sign_up_phone_number_et" />
+        app:layout_constraintTop_toBottomOf="@id/join_phone" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
