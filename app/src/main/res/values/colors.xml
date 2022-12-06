@@ -14,4 +14,6 @@
     <color name="colorPrimaryDark">#FF7043</color>
     <color name="colorAccent">#FFAB40</color>
     <color name="colorGray">#8C8C8C</color>
+    <color name="pink">#F7B199</color>
+    <color name="coral">#FA9A85</color>
 </resources>
