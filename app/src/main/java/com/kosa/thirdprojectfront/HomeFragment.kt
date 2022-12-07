@@ -102,10 +102,16 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 // 더현대의 좌표값 넘기기
                 if((activity as MainActivity).checkDistance()){
                     Log.d("location","좌표 넘어갑니다~")
-                    activity?.onFragmentChange(4)
+                    //activity?.onFragmentChange(4)
+
+                    val intent = Intent(context, ReservationActivity::class.java)
+                    startActivity(intent)
                 }else{
                     // 임시로 보내기
-                    activity?.onFragmentChange(4)
+                    val intent = Intent(context, ReservationActivity::class.java)
+                    intent.putExtra("asd",binding.loginSignInBtn.text.toString())
+                    startActivity(intent)
+                    //activity?.onFragmentChange(4)
                     // 모달 띄우기
 //                    Toast.makeText(this,"500M 이내에서만 예약할 수 있습니다", Toast.LENGTH_SHORT).show()
 

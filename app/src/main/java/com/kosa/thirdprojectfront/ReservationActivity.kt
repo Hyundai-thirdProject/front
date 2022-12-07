@@ -1,5 +1,6 @@
 package com.kosa.thirdprojectfront
 
+import android.content.Intent
 import android.graphics.Color
 import android.media.Image
 import android.os.Bundle
@@ -66,14 +67,24 @@ class ReservationActivity : AppCompatActivity() {
         binding.btnHidden2.setVisibility(View.INVISIBLE);
         binding.btnHidden3.setVisibility(View.INVISIBLE);
         binding.btnHidden4.setVisibility(View.INVISIBLE);
+        binding.btnExpand1.setVisibility(View.INVISIBLE);
+        binding.btnExpand2.setVisibility(View.INVISIBLE);
+        binding.btnExpand3.setVisibility(View.INVISIBLE);
+
 
         // 층 지도 관련 구현
 
 
+
         // 클릭한 내용 들고오기
-        val selecteddepart: TextView = binding.selecteddepart
         val selectedtime: TextView = binding.selectedtime
         val selectedfloor: TextView = binding.selectedfloor
+
+        //지점 가져오기와서 textview에 넣기
+        val secondIntent = intent
+        val departText = secondIntent.getStringExtra("asd")
+        val selecteddepart: TextView = binding.selecteddepart
+        selecteddepart.setText(departText)
 
 
         // 시간 선택한 내용 띄우기
@@ -87,9 +98,10 @@ class ReservationActivity : AppCompatActivity() {
                     numButtons[i]?.text.toString()
                 ) //버튼 번호를 받아와 띄움
 
-
             }
         }
+
+
 
         // 층 선택한 내용 띄우기
         for (i in 0 until floorButtons.size) {
@@ -98,6 +110,15 @@ class ReservationActivity : AppCompatActivity() {
 
         for (i in 0 until expandlayouts.size) {
             expandlayouts[i] = findViewById<View>(expandlayoutIDs[i]) as LinearLayout
+            expandlayouts[i]!!.visibility = View.GONE
+        }
+
+
+        // 층 버튼 숫자에 만큼 만들기
+        for (i in 0 until 2){
+            floorButtons[i]!!.visibility = View.VISIBLE
+            // 여기에 button text의 내용을 데이터에서 꺼내와서 넣기
+            // 여기에 image src을 데이터에서 꺼내와서 넣기
         }
 
 
