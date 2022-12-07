@@ -1,21 +1,39 @@
 package com.kosa.thirdprojectfront
 
-import android.graphics.Color
-import android.media.Image
+import android.content.Context
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.kosa.thirdprojectfront.databinding.ActivityReservationBinding
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.kosa.thirdprojectfront.databinding.FragmentCreateQRBinding
+import com.kosa.thirdprojectfront.databinding.FragmentReservationBinding
 
 
-class ReservationActivity : AppCompatActivity() {
+class ReservationFragment : Fragment(), View.OnClickListener {
 
-    private lateinit var binding: ActivityReservationBinding
+    var activity : MainActivity?=null
+    private  lateinit var binding : FragmentReservationBinding
+
+    //onCreate이전에 실행되는 Attach 와 Detach
+    override fun onAttach(context: Context) {
+        if (context != null){
+            super.onAttach(context)
+            activity = getActivity() as MainActivity?
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        activity = null
+    }
+
 
     val numBtnIDs: Array<Int> = arrayOf(
         R.id.btnTime1,
@@ -56,10 +74,11 @@ class ReservationActivity : AppCompatActivity() {
     var floorButtons: Array<Button?> = arrayOfNulls<Button>(3)
     var expandlayouts: Array<LinearLayout?> = arrayOfNulls<LinearLayout>(3)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityReservationBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+
+        binding = FragmentReservationBinding.inflate(layoutInflater, container, false)
+        val view = binding.root
 
         // 안보이게 하는 버튼관련 구현
         binding.btnHidden1.setVisibility(View.INVISIBLE);
@@ -78,7 +97,7 @@ class ReservationActivity : AppCompatActivity() {
 
         // 시간 선택한 내용 띄우기
         for (i in 0 until numButtons.size) {
-            numButtons[i] = findViewById<View>(numBtnIDs[i]) as Button
+            numButtons[i] = view.findViewById<View>(numBtnIDs[i]) as Button
         }
 
         for (i in 0 until numButtons.size) {
@@ -93,11 +112,11 @@ class ReservationActivity : AppCompatActivity() {
 
         // 층 선택한 내용 띄우기
         for (i in 0 until floorButtons.size) {
-            floorButtons[i] = findViewById<View>(floorBtnIDs[i]) as Button
+            floorButtons[i] = view.findViewById<View>(floorBtnIDs[i]) as Button
         }
 
         for (i in 0 until expandlayouts.size) {
-            expandlayouts[i] = findViewById<View>(expandlayoutIDs[i]) as LinearLayout
+            expandlayouts[i] = view.findViewById<View>(expandlayoutIDs[i]) as LinearLayout
         }
 
 
@@ -123,6 +142,11 @@ class ReservationActivity : AppCompatActivity() {
             }
         }
 
+    return view
+    }
 
+    override fun onClick(v: View?) {
+        TODO("Not yet implemented")
     }
 }
+

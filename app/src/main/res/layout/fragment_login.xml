@@ -4,25 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9EEDB"
-    tools:context=".LoginFragment">
+    tools:context=".LoginFragment"
+    android:id="@+id/fr_login">
 
 
-    <LinearLayout
-        android:id="@+id/login_linear"
-        android:layout_width="413dp"
-        android:layout_height="582dp"
-        android:layout_marginTop="65dp"
-        android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
+        android:background="#F9EEDB"
+        tools:context=".LoginActivity">
 
         <ImageView
             android:id="@+id/login_logo_iv"
             android:layout_width="206dp"
             android:layout_height="194dp"
-            android:layout_marginStart="100dp"
             android:layout_marginTop="48dp"
             android:src="@drawable/logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="4dp" />
 
@@ -30,62 +31,65 @@
             android:id="@+id/login_id_et"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_marginStart="55dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:hint="아이디를 입력하세요"
             android:inputType="text"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_logo_iv" />
 
 
         <EditText
             android:id="@+id/login_password_et"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_marginStart="55dp"
             android:layout_marginTop="20dp"
             android:hint="비밀번호를 입력하세요"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_id_et" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login_sign_in_btn"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_marginStart="55dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/button_background_color"
             android:elevation="30dp"
             android:text="로그인"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_password_et" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login_signup_btn"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_marginStart="55dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/button_background_pink_color"
             android:text="회원가입"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/login_sign_in_btn" />
 
 
-    </LinearLayout>
-
-
-
-
-
-
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </FrameLayout>
