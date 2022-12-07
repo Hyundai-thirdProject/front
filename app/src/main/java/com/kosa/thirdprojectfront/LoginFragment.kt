@@ -1,20 +1,23 @@
 package com.kosa.thirdprojectfront
 
 import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import android.content.pm.PackageManager.NameNotFoundException
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.appcompat.widget.AppCompatButton
-import com.kosa.thirdprojectfront.databinding.FragmentCreateQRBinding
-import com.kosa.thirdprojectfront.databinding.FragmentHomeBinding
+import androidx.fragment.app.Fragment
 import com.kosa.thirdprojectfront.databinding.FragmentLoginBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+
 
 //신미림생성
 class LoginFragment : Fragment(), View.OnClickListener {
@@ -100,6 +103,4 @@ class LoginFragment : Fragment(), View.OnClickListener {
             }
         }
     }
-
-
 }
