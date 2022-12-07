@@ -1,21 +1,37 @@
 package com.kosa.thirdprojectfront
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.kosa.thirdprojectfront.databinding.FragmentHomeBinding
 
 
 //신미림생성
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), View.OnClickListener {
 
+    var activity: MainActivity? = null
     lateinit var binding: FragmentHomeBinding
+
+    override fun onAttach(context: Context) {
+        if (context != null) {
+            super.onAttach(context)
+            activity = getActivity() as MainActivity?
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        activity = null
+    }
 
     var currentPage: Int = 0
 
@@ -28,7 +44,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+//        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(layoutInflater, container,false)
 
         // HomeFragment의 배너
         val bannerAdapter = BannerVPAdapter(this)
@@ -47,9 +64,13 @@ class HomeFragment : Fragment() {
         val thread = Thread(PagerRunnable())
         thread.start()
 
-        binding.loginSignInBtn.setOnClickListener {
-            (activity as MainActivity).checkDistance()
-        }
+//        binding.loginSignInBtn.setOnClickListener{
+//            var a = (activity as MainActivity).checkDistance()
+//            Log.d("loginSignInBtn", "checkDistance")
+//            activity?.onFragmentChange(4)
+//        }
+        binding.loginSignInBtn.setOnClickListener(this)
+
 
         return binding.root
     }
@@ -72,4 +93,39 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+
+            //더현대
+            R.id.login_sign_in_btn ->{
+                // 더현대의 좌표값 넘기기
+                if((activity as MainActivity).checkDistance()){
+                    Log.d("location","좌표 넘어갑니다~")
+                    //activity?.onFragmentChange(4)
+
+                    val intent = Intent(context, ReservationActivity::class.java)
+                    startActivity(intent)
+                }else{
+                    // 임시로 보내기
+                    val intent = Intent(context, ReservationActivity::class.java)
+                    intent.putExtra("asd",binding.loginSignInBtn.text.toString())
+                    startActivity(intent)
+                    //activity?.onFragmentChange(4)
+                    // 모달 띄우기
+//                    Toast.makeText(this,"500M 이내에서만 예약할 수 있습니다", Toast.LENGTH_SHORT).show()
+
+                }
+            }
+            //코엑스
+            R.id.login_sign_in_btn ->{
+
+            }
+            R.id.login_sign_in_btn ->{
+
+            }
+        }
+
+    }
+
 }
