@@ -2,8 +2,12 @@ package com.kosa.thirdprojectfront
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,6 +18,8 @@ class SignUpActivity : AppCompatActivity() {
       var id: String = ""
       var pw: String = ""
       var phone: String = ""
+      var check : Boolean = false
+
       override fun onCreate(savedInstanceState: Bundle?) {
           super.onCreate(savedInstanceState)
           setContentView(R.layout.activity_sign_up)
@@ -22,6 +28,26 @@ class SignUpActivity : AppCompatActivity() {
           val memberPassword = findViewById<EditText>(R.id.join_password)
           val memberPhone = findViewById<EditText>(R.id.join_phone)
           val button = findViewById<AppCompatButton>(R.id.join_button)
+          val joinpwck = findViewById<EditText>(R.id.join_pwck)
+          val joincheck = findViewById<TextView>(R.id.joi_check)
+
+          //비밀번호 일치 여부 확인하기
+          joinpwck.addTextChangedListener(object : TextWatcher {
+              // EditText에 문자 입력 전
+              override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+              // EditText에 변화가 있을 경우
+              override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+              // EditText 입력이 끝난 후
+              override fun afterTextChanged(p0: Editable?) {
+                  if (memberPassword.getText().toString().equals(joinpwck.getText().toString())) {
+                      joincheck.setTextColor(getColor(R.color.background))
+                  } else {
+                      joincheck.setText("비밀번호가 일치하지 않습니다")
+                      joincheck.setTextColor(getColor(R.color.red))
+                  }
+              }
+          })
 
           button.setOnClickListener{
               id = memberId.text.toString()
@@ -32,9 +58,27 @@ class SignUpActivity : AppCompatActivity() {
               member.password = memberPassword.text.toString()
               member.phone = memberPhone.text.toString()
 
+              if (memberId.text.toString().length == 0) {
+                  Toast.makeText(this, "ID를 입력하세요.", Toast.LENGTH_SHORT).show()
+                  return@setOnClickListener
+              }
+              if (memberPassword.text.toString().length == 0) {
+                  Toast.makeText(this, "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show()
+                  return@setOnClickListener
+              }
+              if (memberPhone.text.toString().length == 0) {
+                  Toast.makeText(this, "전화번호를 입력하세요.", Toast.LENGTH_SHORT).show()
+                  return@setOnClickListener
+              }
+              if (!memberPassword.getText().toString().equals(joinpwck.getText().toString())) {
+                  Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                  return@setOnClickListener
+              }
               Log.d("BUTTON CLICKED", "id: " + member.mid + ", pw: " + member.password)
               Login(member)
           }
+
+
       }
       fun Login(member: MemberVO){
           val call = RetrofitBuilder.api.getJoinResponse(member)
