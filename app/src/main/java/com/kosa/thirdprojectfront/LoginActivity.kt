@@ -1,5 +1,6 @@
 package com.kosa.thirdprojectfront
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
 import android.content.pm.PackageInstaller
@@ -18,6 +19,14 @@ import android.content.pm.PackageManager.NameNotFoundException
 import android.util.Base64
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.kakao.auth.Session
 import com.kakao.util.helper.Utility
 import com.kosa.thirdprojectfront.SessionCallback
@@ -44,13 +53,33 @@ class LoginActivity : AppCompatActivity() {
     private val sessionCallback : SessionCallback = SessionCallback()
     private lateinit var session: Session
     private lateinit var loginV2: ImageView
+    private lateinit var btnSignIn: ImageView
 
     private var email: String = ""
     private var gender: String = ""
     private var name: String = ""
 
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+    lateinit var resultLauncher: ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setResultSignUp()
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .requestProfile()
+            .build()
+
+
+
+//            btnSignOut.setOnClickListener {
+//                signOut()
+//            }
+//            btnGetProfile.setOnClickListener {
+//                GetCurrentUserProfile()
+//            }
+
         setContentView(R.layout.activity_login)
 
 
@@ -61,6 +90,13 @@ class LoginActivity : AppCompatActivity() {
         session = Session.getCurrentSession()
         Log.d("fkfkfkfk", session.toString())
         session.addCallback(sessionCallback)
+        btnSignIn = findViewById(R.id.btnSignIn)
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        btnSignIn.setOnClickListener {
+            signIn()
+        }
 
         loginV1.setOnClickListener(View.OnClickListener { v: View? ->
             Log.d("asdfasdf", session.isOpenable.toString())
@@ -136,6 +172,8 @@ class LoginActivity : AppCompatActivity() {
 
         // 카카오 개발자 홈페이지에 등록할 해시키 구하기
 //        getHashKey();
+
+
     }
 
     override fun onDestroy() {
@@ -185,6 +223,47 @@ class LoginActivity : AppCompatActivity() {
         //setLayoutState(false)
         Toast.makeText(this@LoginActivity, "네이버 아이디 로그아웃 성공!", Toast.LENGTH_SHORT).show()
     }
+
+    private fun signIn() {
+        val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
+        resultLauncher.launch(signInIntent)
+    }
+
+
+    private fun setResultSignUp() {
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                // 정상적으로 결과가 받아와진다면 조건문 실행
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val task: Task<GoogleSignInAccount> =
+                        GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                    handleSignInResult(task)
+
+                }
+            }
+    }
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+            val email = account?.email.toString()
+            val familyName = account?.familyName.toString()
+            val givenName = account?.givenName.toString()
+            val displayName = account?.displayName.toString()
+            val photoUrl = account?.photoUrl.toString()
+
+            Log.d("로그인한 유저의 이메일", email)
+            Log.d("로그인한 유저의 성", familyName)
+            Log.d("로그인한 유저의 이름", givenName)
+            Log.d("로그인한 유저의 전체이름", displayName)
+            Log.d("로그인한 유저의 프로필 사진의 주소", photoUrl)
+        } catch (e: ApiException) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("failed", "signInResult:failed code=" + e.statusCode)
+        }
+    }
+
 
 
 }
