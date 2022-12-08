@@ -81,11 +81,12 @@ class SignUpActivity : AppCompatActivity() {
 
       }
       fun Login(member: MemberVO){
+          //url 세팅
           val call = RetrofitBuilder.api.getJoinResponse(member)
           call.enqueue(object : Callback<String> { // 비동기 방식 통신 메소드
               override fun onResponse( // 통신에 성공한 경우
-                  call: Call<String>,
-                  response: Response<String>
+                  call: Call<String>, //  Call같은 경우는 명시적으로 Success / Fail을 나눠서 처리할 수 있음
+                  response: Response<String> //Response 같은 경우는 서버에서 Status Code를 받아서 케이스를 나눠 처리해줄 수 있음
               ) {
                   if(response.isSuccessful()){ // 응답 잘 받은 경우
                       Log.d("RESPONSE: ", response.body().toString())
