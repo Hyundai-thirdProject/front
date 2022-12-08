@@ -1,6 +1,7 @@
 package com.kosa.thirdprojectfront
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -109,7 +110,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 }else{
                     // 임시로 보내기
                     val intent = Intent(context, ReservationActivity::class.java)
-                    intent.putExtra("asd",binding.loginSignInBtn.text.toString())
+                    intent.putExtra("depart",binding.loginSignInBtn.text.toString())
                     startActivity(intent)
                     //activity?.onFragmentChange(4)
                     // 모달 띄우기
