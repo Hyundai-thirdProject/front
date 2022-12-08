@@ -41,6 +41,7 @@ class ReservationActivity : AppCompatActivity() {
         R.id.btnTime20
     )
 
+
     val floorBtnIDs: Array<Int> = arrayOf(
         R.id.btn_expand1,
         R.id.btn_expand2,
@@ -82,7 +83,7 @@ class ReservationActivity : AppCompatActivity() {
 
         //지점 가져오기와서 textview에 넣기
         val secondIntent = intent
-        val departText = secondIntent.getStringExtra("asd")
+        val departText = secondIntent.getStringExtra("depart")
         val selecteddepart: TextView = binding.selecteddepart
         selecteddepart.setText(departText)
 
