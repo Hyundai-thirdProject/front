@@ -84,8 +84,8 @@ class ReservationActivity : AppCompatActivity() {
         //지점 가져오기와서 textview에 넣기
         val secondIntent = intent
         val departText = secondIntent.getStringExtra("depart")
-        val selecteddepart: TextView = binding.selecteddepart
-        selecteddepart.setText(departText)
+        val selecteddepart: TextView = binding.selecteddepart//지점 화면에 띄워줌
+        selecteddepart.setText(departText)//지점 화면에 띄워줌
 
 
         // 시간 선택한 내용 띄우기

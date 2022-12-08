@@ -1,49 +1,43 @@
 package com.kosa.thirdprojectfront
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
-import android.widget.Button
-import android.content.pm.PackageInstaller
-import android.os.Bundle
-import com.kosa.thirdprojectfront.R
-import android.view.View
-import android.util.Log
-import com.kakao.auth.AuthType
-import com.kakao.usermgmt.UserManagement
-import com.kakao.usermgmt.callback.LogoutResponseCallback
-import com.kakao.network.ErrorResult
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.NameNotFoundException
+import android.os.Bundle
 import android.util.Base64
+import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.kakao.auth.AuthType
 import com.kakao.auth.Session
-import com.kakao.util.helper.Utility
-import com.kosa.thirdprojectfront.SessionCallback
+import com.kakao.network.ErrorResult
+import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.kosa.thirdprojectfront.databinding.ActivityLoginBinding
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
-import com.navercorp.nid.profile.api.NidProfileApi
 import com.navercorp.nid.profile.data.NidProfileResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Response
+
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import android.content.Context
+import com.google.android.material.internal.ContextUtils.getActivity
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -62,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setResultSignUp()
@@ -72,6 +67,9 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
 
+        // 기존에 로그인 했던 계정을 확인한다.
+        // 기존에 로그인 했던 계정을 확인한다.
+        val gsa = GoogleSignIn.getLastSignedInAccount(this@LoginActivity)
 
 //            btnSignOut.setOnClickListener {
 //                signOut()
@@ -110,6 +108,15 @@ class LoginActivity : AppCompatActivity() {
 
                 session.open(AuthType.KAKAO_TALK, this@LoginActivity)
                 Log.d("afafaf", session.toString())
+
+                if (session.isOpened) {
+                    Log.d("카카오 로그인","홈프래그먼트로 이동")
+                    val intent = Intent(this, HomeFragment::class.java)
+                    startActivity(intent)
+                    // 다른 액티비티에서 전환할 때
+                    // activity?.finish()
+                }
+
             }
         })
 
@@ -150,24 +157,57 @@ class LoginActivity : AppCompatActivity() {
 
         logout.setOnClickListener(View.OnClickListener { v: View? ->
             Log.d(TAG, "onCreate:click ")
+//
+//            //네이버
+//            if(NaverIdLoginSDK.getAccessToken() != null) {
+//                startNaverLogout()
+//            }
 
-            startNaverLogout()
-
-
-            UserManagement.getInstance()
-                .requestLogout(object : LogoutResponseCallback() {
-                    override fun onSessionClosed(errorResult: ErrorResult) {
-                        super.onSessionClosed(errorResult)
-                        Log.d(TAG, "onSessionClosed: " + errorResult.errorMessage)
+            // 구글
+            if(gsa != null){
+                mGoogleSignInClient.signOut()
+                    .addOnCompleteListener(this) {
+                        Log.d("구글로그아웃", "구글로그아웃성공")
                     }
+            }
 
-                    override fun onCompleteLogout() {
-                        if (sessionCallback != null) {
-                            Session.getCurrentSession().removeCallback(sessionCallback)
+            //카카오
+             else if (session.checkAndImplicitOpen()) {
+                UserManagement.getInstance()
+                    .requestLogout(object : LogoutResponseCallback() {
+                        override fun onSessionClosed(errorResult: ErrorResult) {
+                            super.onSessionClosed(errorResult)
+                            Log.d(TAG, "onSessionClosed: " + errorResult.errorMessage)
                         }
-                        Log.d(TAG, "onCompleteLogout:logout ")
-                    }
-                })
+
+                        override fun onCompleteLogout() {
+                            if (sessionCallback != null) {
+                                Session.getCurrentSession().removeCallback(sessionCallback)
+                            }
+                            Log.d(TAG, "onCompleteLogout:logout ")
+                        }
+                    })
+            }
+//            else {
+//                startNaverLogout()
+//            }
+            //startNaverLogout()
+
+
+//            UserManagement.getInstance()
+//                .requestLogout(object : LogoutResponseCallback() {
+//                    override fun onSessionClosed(errorResult: ErrorResult) {
+//                        super.onSessionClosed(errorResult)
+//                        Log.d(TAG, "onSessionClosed: " + errorResult.errorMessage)
+//                    }
+//
+//                    override fun onCompleteLogout() {
+//                        if (sessionCallback != null) {
+//                            Session.getCurrentSession().removeCallback(sessionCallback)
+//                        }
+//                        Log.d(TAG, "onCompleteLogout:logout ")
+//                    }
+//                })
         })
 
         // 카카오 개발자 홈페이지에 등록할 해시키 구하기
