@@ -2,7 +2,7 @@ package com.kosa.thirdprojectfront
 
 class ReservationVO {
 
-    var rno:String? = null
+    var rno:Int? = null
         get() {return field}
         set(value) {field = value}
 
@@ -11,20 +11,20 @@ class ReservationVO {
         set(value) {field = value}
 
 
-    var fno:String? = null
+    var fno:Int? = null
         get() {return field}
         set(value) {field = value}
 
 
-    var start_time:String? = null
+    var startTime:String? = null
         get() {return field}
         set(value) {field = value}
 
-    var end_time:String? = null
+    var endTime:String? = null
         get() {return field}
         set(value) {field = value}
 
-    var status:String? = null
+    var status:Int? = null
         get() {return field}
         set(value) {field = value}
 
