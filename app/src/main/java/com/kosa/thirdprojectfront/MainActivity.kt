@@ -26,6 +26,7 @@ import java.security.NoSuchAlgorithmException
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+    lateinit var userId : String
 
     // 런타임 권한 요청 시 필요한 요청 코드
     private val PERMISSIONS_REQUEST_CODE = 100
@@ -46,8 +47,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val loginIntent = intent
+        userId = intent.getStringExtra("email").toString()
+        Log.d("userId", userId)
         initBottomNavigation()
-
 
         // 권한 확인 (gps)
         checkAllPermissions()

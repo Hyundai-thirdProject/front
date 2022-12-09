@@ -84,13 +84,14 @@ class ReservationActivity : AppCompatActivity() {
         //지점 가져오기와서 textview에 넣기
         val secondIntent = intent
         val departText = secondIntent.getStringExtra("depart")
-        val selecteddepart: TextView = binding.selecteddepart
-        selecteddepart.setText(departText)
+        val selecteddepart: TextView = binding.selecteddepart//지점 화면에 띄워줌
+        selecteddepart.setText(departText)//지점 화면에 띄워줌
 
 
         // 시간 선택한 내용 띄우기
         for (i in 0 until numButtons.size) {
             numButtons[i] = findViewById<View>(numBtnIDs[i]) as Button
+
         }
 
         for (i in 0 until numButtons.size) {
@@ -98,6 +99,10 @@ class ReservationActivity : AppCompatActivity() {
                 selectedtime.setText(
                     numButtons[i]?.text.toString()
                 ) //버튼 번호를 받아와 띄움
+
+                val time = ReservationVO()
+                val btntext =numButtons[i]?.text.toString()
+                time.start_time = btntext
 
             }
         }
