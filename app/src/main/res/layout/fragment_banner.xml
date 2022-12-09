@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/banner_image_iv"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="250dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
