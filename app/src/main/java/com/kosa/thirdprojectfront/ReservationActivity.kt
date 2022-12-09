@@ -1,17 +1,19 @@
 package com.kosa.thirdprojectfront
 
-import android.content.Intent
-import android.graphics.Color
-import android.media.Image
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kosa.thirdprojectfront.databinding.ActivityReservationBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class ReservationActivity : AppCompatActivity() {
@@ -76,7 +78,6 @@ class ReservationActivity : AppCompatActivity() {
         // 층 지도 관련 구현
 
 
-
         // 클릭한 내용 들고오기
         val selectedtime: TextView = binding.selectedtime
         val selectedfloor: TextView = binding.selectedfloor
@@ -102,11 +103,10 @@ class ReservationActivity : AppCompatActivity() {
 
                 val time = ReservationVO()
                 val btntext =numButtons[i]?.text.toString()
-                time.start_time = btntext
+                time.startTime = btntext
 
             }
         }
-
 
 
         // 층 선택한 내용 띄우기
@@ -121,13 +121,14 @@ class ReservationActivity : AppCompatActivity() {
 
 
         // 층 버튼 숫자에 만큼 만들기
-        for (i in 0 until 2){
+        for (i in 0 until 2) {
             floorButtons[i]!!.visibility = View.VISIBLE
             // 여기에 button text의 내용을 데이터에서 꺼내와서 넣기
             // 여기에 image src을 데이터에서 꺼내와서 넣기
         }
 
 
+        // 내가 클릭하지 않은 지도 다 접어
         for (i in 0 until floorButtons.size) {
             floorButtons[i]!!.setOnClickListener {
                 if (expandlayouts[i]!!.visibility == View.VISIBLE) {
@@ -150,6 +151,50 @@ class ReservationActivity : AppCompatActivity() {
             }
         }
 
+        val fragment_mypage = CreateQRFragment()
 
+        binding.reservation.setOnClickListener {
+            val reservationVO = ReservationVO()
+            reservationVO.mid = "ms"
+            reservationVO.fno = 1
+            reservationVO.startTime = selectedtime.text.toString()
+            Log.d("예약 시작 시간", selectedtime.text.toString())
+            reservationVO.endTime = selectedtime.text.toString()
+            reservationVO.status = 0
+
+            ReservationInsert(reservationVO)
+
+//            val nextIntent = Intent(this, MainActivity::class.java)
+//            startActivity(nextIntent)
+//
+//           supportFragmentManager
+//               .beginTransaction()
+//               .replace(R.id.createQRFrameLayout, fragment_mypage)
+//               .commit()
+        }
     }
+}
+
+fun ReservationInsert(reservationVO: ReservationVO) {
+    //url 세팅
+    val call = RetrofitBuilder.api.getReservationInsertResponse(reservationVO)
+    call.enqueue(object : Callback<String> { // 비동기 방식 통신 메소드
+        override fun onResponse( // 통신에 성공한 경우
+            call: Call<String>, //  Call같은 경우는 명시적으로 Success / Fail을 나눠서 처리할 수 있음
+            response: Response<String> //Response 같은 경우는 서버에서 Status Code를 받아서 케이스를 나눠 처리해줄 수 있음
+        ) {
+            if (response.isSuccessful()) { // 응답 잘 받은 경우
+                Log.d("RESPONSE: ", response.body().toString())
+
+            } else {
+                // 통신 성공 but 응답 실패
+                Log.d("RESPONSE", "FAILURE")
+            }
+        }
+
+        override fun onFailure(call: Call<String>, t: Throwable) {
+            // 통신에 실패한 경우
+            Log.d("CONNECTION FAILURE: ", t.localizedMessage)
+        }
+    })
 }
