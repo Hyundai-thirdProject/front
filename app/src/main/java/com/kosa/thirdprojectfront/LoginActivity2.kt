@@ -49,6 +49,7 @@ class LoginActivity2 : AppCompatActivity() {
             }
         })
 
+        //로그인을 새로할 때 로그인 시도 후 홈 화면으로 보내기 위해 한번더 해당 코드를 넣어줌 - 사용자 정보 받아와야하므로
         if (Session.getCurrentSession().checkAndImplicitOpen()) {
             Log.d(LoginActivity2.Companion.TAG, "onClick: 로그인 세션살아있음")
             // 카카오 로그인 시도 (창이 안뜬다.)

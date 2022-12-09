@@ -11,9 +11,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.kosa.thirdprojectfront.databinding.FragmentHomeBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 //신미림생성
@@ -21,6 +25,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     var activity: MainActivity? = null
     lateinit var binding: FragmentHomeBinding
+
 
     override fun onAttach(context: Context) {
         if (context != null) {
@@ -48,6 +53,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
 //        binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding = FragmentHomeBinding.inflate(layoutInflater, container,false)
 
+
+
         // HomeFragment의 배너
         val bannerAdapter = BannerVPAdapter(this)
         bannerAdapter.addFragment(BannerFragment(R.drawable.logo2))
@@ -71,6 +78,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
 //            activity?.onFragmentChange(4)
 //        }
         binding.loginSignInBtn.setOnClickListener(this)
+
+
+
 
 
         return binding.root
@@ -117,6 +127,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
 //                    Toast.makeText(this,"500M 이내에서만 예약할 수 있습니다", Toast.LENGTH_SHORT).show()
 
                 }
+
+
+
+
+
             }
             //코엑스
             R.id.login_sign_in_btn ->{
@@ -129,4 +144,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     }
 
-}
+
+
+
+
+    }
+
