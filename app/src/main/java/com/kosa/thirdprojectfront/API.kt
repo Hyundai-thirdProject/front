@@ -12,4 +12,6 @@ interface API {
     @POST("member/join")
     fun getJoinResponse(@Body memberVO: MemberVO ) : Call<String>
 
+    @POST("reservation/insert")
+    fun getReservationInsertResponse(@Body reservationVO: ReservationVO) : Call<String>
 }
