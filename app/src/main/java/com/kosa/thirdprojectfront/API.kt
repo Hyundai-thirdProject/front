@@ -4,6 +4,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface API {
     @POST("android")
@@ -14,4 +15,8 @@ interface API {
 
     @POST("reservation/insert")
     fun getReservationInsertResponse(@Body reservationVO: ReservationVO) : Call<String>
+
+    @POST("reservation/search")
+    fun searchMyReservation(@Body userId : String) : Call<MyReservationVO>
+
 }

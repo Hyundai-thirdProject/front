@@ -18,6 +18,11 @@ class CreateQRFragment : Fragment(), View.OnClickListener {
     var activity: MainActivity? = null
     private lateinit var binding : FragmentCreateQRBinding
 
+    private lateinit var mid : String
+    private lateinit var start_time : String
+    private lateinit var floor : String
+    private lateinit var department_store : String
+
     override fun onAttach(context: Context) {
         if (context != null) {
             super.onAttach(context)
@@ -32,14 +37,36 @@ class CreateQRFragment : Fragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        arguments?.let {
+            mid = it.getString("mid").toString()
+            start_time = it.getString("start_time").toString()
+            floor = it.getString("floor").toString()
+            department_store = it.getString("department_store").toString()
+        }
 
         binding = FragmentCreateQRBinding.inflate(layoutInflater, container, false)
         val view = binding.root
 
+        val b_branch = binding.branchInfo
+        val b_floor = binding.floorInfo
+        val b_time = binding.timeInfo
+
         val imageView = binding.qrcode
         val modifyBtn = binding.modify
         val cancelBtn = binding.cancel
-        val text = "2022-12-04"
+
+//        b_branch.setText(String(department_store.toByteArray(Charsets.ISO_8859_1), Charsets.UTF_8))
+        b_branch.setText(department_store)
+        if (floor.startsWith("-")) {
+            b_floor.setText("지하 " + floor.substring(1) + " 층")
+        } else {
+            b_floor.setText(floor + " 층")
+        }
+        b_time.setText(start_time)
+
+        val text = "branch: ${department_store}\n" +
+                "start_time: ${start_time}\n" +
+                "floor: ${floor}"
 
         modifyBtn.setOnClickListener(this)
         cancelBtn.setOnClickListener(this)

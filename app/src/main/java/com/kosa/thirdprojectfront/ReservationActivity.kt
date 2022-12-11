@@ -1,11 +1,13 @@
 package com.kosa.thirdprojectfront
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kosa.thirdprojectfront.databinding.ActivityReservationBinding
 import retrofit2.Call
@@ -13,6 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 
@@ -42,7 +45,6 @@ class ReservationActivity : AppCompatActivity() {
         R.id.btnTime19,
         R.id.btnTime20
     )
-
 
     val floorBtnIDs: Array<Int> = arrayOf(
         R.id.btn_expand1,
@@ -74,10 +76,6 @@ class ReservationActivity : AppCompatActivity() {
         binding.btnExpand2.setVisibility(View.INVISIBLE);
         binding.btnExpand3.setVisibility(View.INVISIBLE);
 
-
-        // 층 지도 관련 구현
-
-
         // 클릭한 내용 들고오기
         val selectedtime: TextView = binding.selectedtime
         val selectedfloor: TextView = binding.selectedfloor
@@ -87,7 +85,6 @@ class ReservationActivity : AppCompatActivity() {
         val departText = secondIntent.getStringExtra("depart")
         val selecteddepart: TextView = binding.selecteddepart//지점 화면에 띄워줌
         selecteddepart.setText(departText)//지점 화면에 띄워줌
-
 
         // 시간 선택한 내용 띄우기
         for (i in 0 until numButtons.size) {
@@ -102,7 +99,7 @@ class ReservationActivity : AppCompatActivity() {
                 ) //버튼 번호를 받아와 띄움
 
                 val time = ReservationVO()
-                val btntext =numButtons[i]?.text.toString()
+                val btntext = numButtons[i]?.text.toString()
                 time.startTime = btntext
 
             }
@@ -146,31 +143,52 @@ class ReservationActivity : AppCompatActivity() {
                         }
                     }
                 }
-
-
             }
         }
 
         val fragment_mypage = CreateQRFragment()
 
         binding.reservation.setOnClickListener {
+
+            // 칸이 안채워져있으면 insert못함
+
+            if (selecteddepart.text.toString().length == 0) {
+                Toast.makeText(this, "지점을 선택해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (selectedfloor.text.toString().length == 0) {
+                Toast.makeText(this, "층을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (selectedtime.text.toString().length == 0) {
+                Toast.makeText(this, "시간을 선택해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val reservationVO = ReservationVO()
             reservationVO.mid = "ms"
-            reservationVO.fno = 1
+            reservationVO.fno = 2
             reservationVO.startTime = selectedtime.text.toString()
             Log.d("예약 시작 시간", selectedtime.text.toString())
-            reservationVO.endTime = selectedtime.text.toString()
-            reservationVO.status = 0
+            reservationVO.endTime =selectedtime.text.toString()
 
+//            var time = LocalTime.parse(selectedtime.text.toString(), DateTimeFormatter.ofPattern("hh:mm"))
+//            time = time.plusMinutes(30)
+//            println(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+//            reservationVO.endTime =time.toString()
+            reservationVO.status = 0
             ReservationInsert(reservationVO)
 
-//            val nextIntent = Intent(this, MainActivity::class.java)
-//            startActivity(nextIntent)
-//
-//           supportFragmentManager
-//               .beginTransaction()
-//               .replace(R.id.createQRFrameLayout, fragment_mypage)
-//               .commit()
+
+
+            val nextIntent = Intent(this, MainActivity::class.java)
+            startActivity(nextIntent)
+
+                    //if 객체가 있으면 fragment로 가고
+            // 없으면 홈으로 가세영
+
+
+
         }
     }
 }
