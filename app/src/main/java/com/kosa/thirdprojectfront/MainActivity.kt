@@ -93,10 +93,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.loginFragment -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainFrameLayout, LoginFragment())
-                        .commitAllowingStateLoss()
-                    return@setOnItemSelectedListener true
+                    startActivity(Intent(this@MainActivity,LoginActivity2::class.java))
                 }
                 R.id.mypageFragment -> {
                     searchMyReservation(userId)
