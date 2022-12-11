@@ -6,21 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".CreateQRFragment"
     android:id="@+id/createQRFrameLayout"
-    android:background="#F9EEDB">
+    android:background="@color/backgroundColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/qrcode"
-            app:layout_constraintBottom_toTopOf="@id/guideline"
+        <TextView
+            android:id="@+id/home_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="H Y U N D A I"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/qrcode"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="60dp" />
+            android:layout_marginBottom="30dp"
+            app:layout_constraintBottom_toTopOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_logo"
+            app:layout_constraintVertical_bias="0.75" />
 
         <TextView
             android:id="@+id/branch"
@@ -28,6 +44,7 @@
             android:layout_height="wrap_content"
             android:text="지점"
             android:textSize="20dp"
+            android:textColor="@color/background"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="80dp"
             app:layout_constraintTop_toTopOf="@+id/guideline"
@@ -39,6 +56,7 @@
             android:layout_height="wrap_content"
             android:text="층"
             android:textSize="20dp"
+            android:textColor="@color/background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/branch"
             android:layout_marginTop="20dp"
@@ -51,6 +69,7 @@
             android:layout_height="wrap_content"
             android:text="시간"
             android:textSize="20dp"
+            android:textColor="@color/background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/floor"
             android:layout_marginTop="20dp"
@@ -62,15 +81,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.55" />
+            app:layout_constraintGuide_percent="0.63" />
 
         <TextView
             android:id="@+id/branch_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="더 현대 서울"
+            android:text=""
             android:textSize="25dp"
             android:textStyle="bold"
+            android:textColor="@color/background"
             app:layout_constraintBottom_toBottomOf="@+id/branch"
             app:layout_constraintStart_toEndOf="@id/branch"
             android:layout_marginStart="50dp"
@@ -80,8 +100,9 @@
             android:id="@+id/floor_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5층"
+            android:text=""
             android:textSize="25dp"
+            android:textColor="@color/background"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/floor"
             app:layout_constraintStart_toEndOf="@id/branch"
@@ -92,9 +113,10 @@
             android:id="@+id/time_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10:30"
+            android:text=""
             android:textSize="25dp"
             android:textStyle="bold"
+            android:textColor="@color/background"
             app:layout_constraintBottom_toBottomOf="@+id/time"
             app:layout_constraintStart_toEndOf="@id/branch"
             android:layout_marginStart="50dp"
@@ -106,12 +128,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="70dp"
             android:layout_marginTop="20dp"
-            android:backgroundTint="#F7B199"
+            android:backgroundTint="#BD9965"
             android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
             android:text="예약 수정"
             android:textSize="18dp"
-            android:textColor="@color/black"
+            android:textColor="@color/xmasblack"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/time" />
@@ -120,10 +142,10 @@
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#A2B38B"
+            android:backgroundTint="#215A63"
             android:text="예약 취소"
             android:textSize="18dp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:paddingVertical="10dp"
             android:paddingHorizontal="20dp"

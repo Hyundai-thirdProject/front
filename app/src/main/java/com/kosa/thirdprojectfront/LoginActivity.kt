@@ -83,12 +83,12 @@ class LoginActivity : AppCompatActivity() {
 
         loginV1 = findViewById(R.id.loginV1)
         logout = findViewById(R.id.logout)
-        loginV2 = findViewById(R.id.tv_naver_login)
+
 
         session = Session.getCurrentSession()
         Log.d("fkfkfkfk", session.toString())
         session.addCallback(sessionCallback)
-        btnSignIn = findViewById(R.id.btnSignIn)
+
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 

@@ -1,5 +1,6 @@
 package com.kosa.thirdprojectfront
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -43,7 +44,6 @@ class ReservationActivity : AppCompatActivity() {
         R.id.btnTime20
     )
 
-
     val floorBtnIDs: Array<Int> = arrayOf(
         R.id.btn_expand1,
         R.id.btn_expand2,
@@ -74,10 +74,6 @@ class ReservationActivity : AppCompatActivity() {
         binding.btnExpand2.setVisibility(View.INVISIBLE);
         binding.btnExpand3.setVisibility(View.INVISIBLE);
 
-
-        // 층 지도 관련 구현
-
-
         // 클릭한 내용 들고오기
         val selectedtime: TextView = binding.selectedtime
         val selectedfloor: TextView = binding.selectedfloor
@@ -87,7 +83,6 @@ class ReservationActivity : AppCompatActivity() {
         val departText = secondIntent.getStringExtra("depart")
         val selecteddepart: TextView = binding.selecteddepart//지점 화면에 띄워줌
         selecteddepart.setText(departText)//지점 화면에 띄워줌
-
 
         // 시간 선택한 내용 띄우기
         for (i in 0 until numButtons.size) {
@@ -102,7 +97,7 @@ class ReservationActivity : AppCompatActivity() {
                 ) //버튼 번호를 받아와 띄움
 
                 val time = ReservationVO()
-                val btntext =numButtons[i]?.text.toString()
+                val btntext = numButtons[i]?.text.toString()
                 time.startTime = btntext
 
             }
@@ -146,8 +141,6 @@ class ReservationActivity : AppCompatActivity() {
                         }
                     }
                 }
-
-
             }
         }
 
@@ -156,21 +149,20 @@ class ReservationActivity : AppCompatActivity() {
         binding.reservation.setOnClickListener {
             val reservationVO = ReservationVO()
             reservationVO.mid = "ms"
-            reservationVO.fno = 1
+            reservationVO.fno = 2
             reservationVO.startTime = selectedtime.text.toString()
             Log.d("예약 시작 시간", selectedtime.text.toString())
             reservationVO.endTime = selectedtime.text.toString()
             reservationVO.status = 0
-
             ReservationInsert(reservationVO)
+
+            //첫번째 방법
 
 //            val nextIntent = Intent(this, MainActivity::class.java)
 //            startActivity(nextIntent)
-//
-//           supportFragmentManager
-//               .beginTransaction()
-//               .replace(R.id.createQRFrameLayout, fragment_mypage)
-//               .commit()
+
+                    //if 객체가 있으면 fragment로 가고
+            // 없으면 홈으로 가세영
         }
     }
 }

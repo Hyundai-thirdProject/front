@@ -7,8 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name = "backgroundColor">#F9EEDB</color>
-    <color name="main">#A2B38B</color>
+
+    <color name = "backgroundColor">#790A07</color>
+    <color name="main">#3C5548</color>
     <color name="main_nav_icon">#C35B17</color>
     <color name="colorPrimary">#FFC107</color>
     <color name="colorPrimaryDark">#FF7043</color>
@@ -18,4 +19,15 @@
     <color name="coral">#FA9A85</color>
     <color name="red">#E00B0B</color>
     <color name="background">#F9EEDB</color>
+    <color name="xmasblack">#0F160F</color>
+    <color name ="xmasblue">#233224</color>
+    <color name ="xmasgreen">#6F7B54</color>
+    <color name ="xmasgold">#C5A880</color>
+
+
+    <!--<color name = "backgroundColor">#F9EEDB</color>
+    <color name = "backgroundColor">#DCDCDC</color>// 회색
+     <color name="main">#A2B38B</color>
+     <color name="main_nav_icon">#C35B17</color>
+     -->
 </resources>
