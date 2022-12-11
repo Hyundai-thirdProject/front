@@ -93,16 +93,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBottomNavigation() {
 
+        val bundle2 : Bundle = Bundle()
+        Log.d("mainActivity init",userId)
+        bundle2.putString("userId", userId)
+        HomeFragment().arguments=bundle2
+        var homeFragmentWithBundle2 = HomeFragment()
+        homeFragmentWithBundle2.arguments=bundle2
+
         supportFragmentManager.beginTransaction()
-            .replace(R.id.mainFrameLayout, HomeFragment())
+            .replace(R.id.mainFrameLayout,homeFragmentWithBundle2)
             .commitAllowingStateLoss()
 
         binding.navigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
 
+
                 R.id.homeFragment -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainFrameLayout, HomeFragment())
+                        .replace(R.id.mainFrameLayout, homeFragmentWithBundle2)
                         .commitAllowingStateLoss()
                     return@setOnItemSelectedListener true
                 }

@@ -27,6 +27,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     lateinit var binding: FragmentHomeBinding
 
     var vo: FeedingRoomVO? = null
+    var userId : String?=null
 
 
     override fun onAttach(context: Context) {
@@ -55,6 +56,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
 //        binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
+    
+        // 메인 액티비티에서 넘어온 번들사용하기
+        arguments?.let { 
+            userId = it.getString("userId").toString()
+        }
+        Log.d("homefragment onCreateView", userId+": 아이디")
 
 
         // HomeFragment의 배너
@@ -82,6 +89,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.yeouidoBtn.setOnClickListener(this)
         binding.apgujeongBtn.setOnClickListener(this)
         binding.muyeogsenteoBtn.setOnClickListener(this)
+
+
 
 
 
@@ -143,7 +152,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
                     val intent = Intent(context, ReservationActivity::class.java)
                     Log.d("getPosition()","아이디 intent로 넘어왔는지 확인 : "+intent.getStringExtra("userId").toString())
-                    intent.putExtra("userId", intent.getStringExtra("userId").toString())
+                    intent.putExtra("userId", userId)
                     intent.putExtra("room_count", vo?.room_count)
                     intent.putExtra("fno", vo?.fno)
 

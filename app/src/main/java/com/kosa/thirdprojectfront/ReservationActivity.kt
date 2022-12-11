@@ -65,6 +65,8 @@ class ReservationActivity : AppCompatActivity() {
     var expandlayouts: Array<LinearLayout?> = arrayOfNulls<LinearLayout>(3)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         binding = ActivityReservationBinding.inflate(layoutInflater)
         setContentView(binding.root)
