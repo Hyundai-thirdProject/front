@@ -38,46 +38,24 @@ class LoginActivity2 : AppCompatActivity() {
         session = Session.getCurrentSession()
         session.addCallback(sessionCallback)
 
-        loginV1.setOnClickListener(View.OnClickListener { v: View? ->
+            loginV1.setOnClickListener(View.OnClickListener { v: View? ->
+                if (Session.getCurrentSession().checkAndImplicitOpen()) {
+                    Log.d(LoginActivity2.Companion.TAG, "onClick: 로그인 세션살아있음")
+                    // 카카오 로그인 시도 (창이 안뜬다.)
+                    sessionCallback!!.requestMe()
+                } else {
+                    Log.d(LoginActivity2.Companion.TAG, "onClick: 로그인 세션끝남")
+                    // 카카오 로그인 시도 (창이 뜬다.)
+                    session.open(AuthType.KAKAO_LOGIN_ALL, this@LoginActivity2)
+                }
+            })
+
+            //로그인을 새로할 때 로그인 시도 후 홈 화면으로 보내기 위해 한번더 해당 코드를 넣어줌 - 사용자 정보 받아와야하므로
             if (Session.getCurrentSession().checkAndImplicitOpen()) {
                 Log.d(LoginActivity2.Companion.TAG, "onClick: 로그인 세션살아있음")
                 // 카카오 로그인 시도 (창이 안뜬다.)
                 sessionCallback!!.requestMe()
-            } else {
-                Log.d(LoginActivity2.Companion.TAG, "onClick: 로그인 세션끝남")
-                // 카카오 로그인 시도 (창이 뜬다.)
-                session.open(AuthType.KAKAO_LOGIN_ALL, this@LoginActivity2)
             }
-        })
-
-        //로그인을 새로할 때 로그인 시도 후 홈 화면으로 보내기 위해 한번더 해당 코드를 넣어줌 - 사용자 정보 받아와야하므로
-        if (Session.getCurrentSession().checkAndImplicitOpen()) {
-            Log.d(LoginActivity2.Companion.TAG, "onClick: 로그인 세션살아있음")
-            // 카카오 로그인 시도 (창이 안뜬다.)
-            sessionCallback!!.requestMe()
-        }
-
-        logout.setOnClickListener(View.OnClickListener { v: View? ->
-            Log.d(LoginActivity2.Companion.TAG, "onCreate:click ")
-            UserManagement.getInstance()
-                .requestLogout(object : LogoutResponseCallback() {
-                    override fun onSessionClosed(errorResult: ErrorResult) {
-                        super.onSessionClosed(errorResult)
-                        Log.d(
-                            LoginActivity2.Companion.TAG,
-                            "onSessionClosed: " + errorResult.errorMessage
-                        )
-                    }
-
-                    override fun onCompleteLogout() {
-                        if (sessionCallback != null) {
-                            Session.getCurrentSession()
-                                .removeCallback(sessionCallback)
-                        }
-                        Log.d(LoginActivity2.Companion.TAG, "onCompleteLogout:logout ")
-                    }
-                })
-        })
 
         // 카카오 개발자 홈페이지에 등록할 해시키 구하기
 //        getHashKey();
