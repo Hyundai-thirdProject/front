@@ -366,13 +366,14 @@
                     android:textColor="@color/white"
                     android:textStyle="bold" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_expand1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="15dp"
                     android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/xmasgreen"
+                    android:background="@color/xmasgreen"
                     android:text="지하1층"
                     android:textSize="20sp" />
 
@@ -390,14 +391,15 @@
 
                 </LinearLayout>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_expand2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/xmasblue"
+                    android:background="@color/xmasblue"
                     android:text="5층"
+                    android:layout_marginBottom="15dp"
                     android:textSize="20sp" />
 
                 <LinearLayout
@@ -414,13 +416,13 @@
 
                 </LinearLayout>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_expand3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/xmasgreen"
+                    android:background="@color/xmasgreen"
                     android:text="6층"
                     android:textSize="20sp" />
 
@@ -515,7 +517,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="70dp"
                     android:background="@drawable/button_background_color"
                     android:text="예약하기"
                     android:textColor="@color/white"/>
