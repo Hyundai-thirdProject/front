@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EmptyQRFragment"
-    android:background="#F9EEDB"
+    android:background="@color/backgroundColor"
     android:id="@+id/emptyQRFrameLayout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
