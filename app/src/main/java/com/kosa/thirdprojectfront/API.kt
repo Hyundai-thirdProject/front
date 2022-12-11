@@ -19,4 +19,6 @@ interface API {
     @POST("reservation/search")
     fun searchMyReservation(@Body userId : String) : Call<MyReservationVO>
 
+    @POST("reservation/modify")
+    fun modifyResrevation(@Body reservationVO: ReservationVO) : Call<String>
 }
