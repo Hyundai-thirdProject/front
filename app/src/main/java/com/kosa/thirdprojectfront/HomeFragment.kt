@@ -141,36 +141,31 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     Log.d("getPosition() ", "방 개수 ${vo?.room_count}")
                     val check = (activity as MainActivity).checkDistance(vo?.latitude!!.toDouble(), vo?.longitude!!.toDouble());
 
+                    val intent = Intent(context, ReservationActivity::class.java)
+                    Log.d("getPosition()","아이디 intent로 넘어왔는지 확인 : "+intent.getStringExtra("userId").toString())
+                    intent.putExtra("userId", intent.getStringExtra("userId").toString())
+                    intent.putExtra("room_count", vo?.room_count)
+                    intent.putExtra("fno", vo?.fno)
+
                     // 일단 false로 뜨는 check 테스트를 위해 true로 처리
                     if(fno==1 && !check){
-                        val intent = Intent(context, ReservationActivity::class.java)
                         intent.putExtra("depart", binding.yeouidoBtn.text.toString())
-                        intent.putExtra("room_count", vo?.room_count)
-                        intent.putExtra("fno", vo?.fno)
                         intent.putExtra("fno2", 2)
                         intent.putExtra("fno3", 3)
                         startActivity(intent)
                     }
                     else if(fno==4 && !check){
-                        val intent = Intent(context, ReservationActivity::class.java)
                         intent.putExtra("depart", binding.apgujeongBtn.text.toString())
-                        intent.putExtra("room_count", vo?.room_count)
-                        intent.putExtra("fno", vo?.fno)
                         startActivity(intent)
                     }
                     else if(fno==5 && !check){
-                        val intent = Intent(context, ReservationActivity::class.java)
                         intent.putExtra("depart", binding.muyeogsenteoBtn.text.toString())
-                        intent.putExtra("room_count", vo?.room_count)
-                        intent.putExtra("fno", vo?.fno)
                         startActivity(intent)
                     }
                     // 거리가 안되면 예약불가능
                     else {
                         val intent = Intent(context, ReservationActivity::class.java)
                         intent.putExtra("depart", binding.muyeogsenteoBtn.text.toString())
-                        intent.putExtra("room_count", vo?.room_count)
-                        intent.putExtra("fno", vo?.fno)
                         startActivity(intent)
                     }
 
