@@ -3,13 +3,10 @@ package com.kosa.thirdprojectfront
 import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.NameNotFoundException
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -18,9 +15,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.kosa.thirdprojectfront.databinding.ActivityMainBinding
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity() {
@@ -63,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().replace(R.id.createQRFrameLayout, HomeFragment())
                 .commit()
         } else if (index == 1) {
-            supportFragmentManager.beginTransaction().replace(R.id.createQRFrameLayout, HomeFragment())
+            supportFragmentManager.beginTransaction().replace(R.id.createQRFrameLayout, EmptyQRFragment())
                 .commit()
         } else if (index == 2) {
             supportFragmentManager.beginTransaction().replace(R.id.emptyQRFrameLayout, HomeFragment())
@@ -78,8 +77,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initBottomNavigation() {
-
-        var text = "2022-12-06"
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.mainFrameLayout, HomeFragment())
@@ -102,24 +99,74 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.mypageFragment -> {
-                    if (text != ""){
+                    searchMyReservation(userId)
+                }
+            }
+            false
+        }
+    }
+
+    fun setFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.mainFrameLayout, fragment)
+        transaction.commit()
+    }
+
+    fun setDataAtFragment(fragment: Fragment, mid:String, start_time:String, floor:String, department_store:String) {
+        val bundle : Bundle = Bundle()
+        bundle.putString("mid", mid)
+        bundle.putString("start_time", start_time)
+        bundle.putString("floor", floor)
+        bundle.putString("department_store", department_store)
+
+        fragment.arguments = bundle
+        setFragment(fragment)
+    }
+
+    private fun searchMyReservation(userId: String) {
+        val call = RetrofitBuilder.api.searchMyReservation(userId)
+        call.enqueue(object : Callback<MyReservationVO> { // 비동기 방식 통신 메소드
+            override fun onResponse( // 통신에 성공한 경우
+                call: Call<MyReservationVO>, //  Call같은 경우는 명시적으로 Success / Fail을 나눠서 처리할 수 있음
+                response: Response<MyReservationVO> //Response 같은 경우는 서버에서 Status Code를 받아서 케이스를 나눠 처리해줄 수 있음
+            ) {
+                if(response.isSuccessful()){ // 응답 잘 받은 경우
+                    val vo : MyReservationVO? = response.body()
+                    Log.d("RESPONSE: ", vo.toString())
+                    if (vo != null) {
+                        Log.d("넘어온 mid", vo.mid.toString())
+                        Log.d("넘어온 start_time", vo.start_time.toString())
+                        Log.d("넘어온 floor", vo.floor.toString())
+                        Log.d("넘어온 department_store", vo.department_store.toString())
+
                         Log.d("CreateQR", "실행중")
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.mainFrameLayout, CreateQRFragment())
-                            .commitAllowingStateLoss()
-                        return@setOnItemSelectedListener true
+                        setDataAtFragment(CreateQRFragment(), vo.mid.toString(),
+                            vo.start_time.toString(), vo.floor.toString(),
+                            vo.department_store.toString())
                     }
+
                     else {
                         Log.d("EmptyQR", "실행중")
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.mainFrameLayout, EmptyQRFragment())
                             .commitAllowingStateLoss()
-                        return@setOnItemSelectedListener true
                     }
+
+                }else{
+                    // 통신 성공 but 응답 실패
+                    Log.d("RESPONSE", "FAILURE")
+                    Log.d("EmptyQR", "실행중")
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.mainFrameLayout, EmptyQRFragment())
+                        .commitAllowingStateLoss()
                 }
             }
-            false
-        }
+
+            override fun onFailure(call: Call<MyReservationVO>, t: Throwable) {
+                // 통신에 실패한 경우
+                Log.d("CONNECTION FAILURE: ", t.localizedMessage)
+            }
+        })
     }
 
 
