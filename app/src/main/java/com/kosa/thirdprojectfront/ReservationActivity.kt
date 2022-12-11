@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kosa.thirdprojectfront.databinding.ActivityReservationBinding
 import retrofit2.Call
@@ -14,6 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 
@@ -147,22 +149,46 @@ class ReservationActivity : AppCompatActivity() {
         val fragment_mypage = CreateQRFragment()
 
         binding.reservation.setOnClickListener {
+
+            // 칸이 안채워져있으면 insert못함
+
+            if (selecteddepart.text.toString().length == 0) {
+                Toast.makeText(this, "지점을 선택해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (selectedfloor.text.toString().length == 0) {
+                Toast.makeText(this, "층을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (selectedtime.text.toString().length == 0) {
+                Toast.makeText(this, "시간을 선택해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val reservationVO = ReservationVO()
             reservationVO.mid = "ms"
             reservationVO.fno = 2
             reservationVO.startTime = selectedtime.text.toString()
             Log.d("예약 시작 시간", selectedtime.text.toString())
-            reservationVO.endTime = selectedtime.text.toString()
+            reservationVO.endTime =selectedtime.text.toString()
+
+//            var time = LocalTime.parse(selectedtime.text.toString(), DateTimeFormatter.ofPattern("hh:mm"))
+//            time = time.plusMinutes(30)
+//            println(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+//            reservationVO.endTime =time.toString()
             reservationVO.status = 0
             ReservationInsert(reservationVO)
 
-            //첫번째 방법
 
-//            val nextIntent = Intent(this, MainActivity::class.java)
-//            startActivity(nextIntent)
+
+            val nextIntent = Intent(this, MainActivity::class.java)
+            startActivity(nextIntent)
 
                     //if 객체가 있으면 fragment로 가고
             // 없으면 홈으로 가세영
+
+
+
         }
     }
 }
