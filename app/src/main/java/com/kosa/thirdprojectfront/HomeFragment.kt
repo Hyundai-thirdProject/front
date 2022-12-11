@@ -57,10 +57,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         // HomeFragment의 배너
         val bannerAdapter = BannerVPAdapter(this)
-        bannerAdapter.addFragment(BannerFragment(R.drawable.logo2))
-        bannerAdapter.addFragment(BannerFragment(R.drawable.logo))
-        bannerAdapter.addFragment(BannerFragment(R.drawable.logo3))
-        bannerAdapter.addFragment(BannerFragment(R.drawable.logo4))
+        bannerAdapter.addFragment(BannerFragment(R.drawable.banner3))
+        bannerAdapter.addFragment(BannerFragment(R.drawable.banner2))
+        bannerAdapter.addFragment(BannerFragment(R.drawable.banner1))
+        bannerAdapter.addFragment(BannerFragment(R.drawable.banner4))
         val viewPager : ViewPager2 = binding.homeBannerVp
         binding.homeBannerVp.adapter = bannerAdapter
         binding.homeBannerVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
