@@ -16,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.kakao.auth.Session
+import com.kakao.network.ErrorResult
+import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.kosa.thirdprojectfront.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -103,11 +107,34 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
 
-                R.id.loginFragment -> {
-                    startActivity(Intent(this@MainActivity,LoginActivity2::class.java))
+                R.id.logoutFragment -> {
+                    val sessionCallback : SessionCallback = SessionCallback()
+
+                    Log.d("logoutlogout", "onCreate:click ")
+                    UserManagement.getInstance()
+                        .requestLogout(object : LogoutResponseCallback() {
+                            override fun onSessionClosed(errorResult: ErrorResult) {
+                                super.onSessionClosed(errorResult)
+                                Log.d(
+                                    "logoutlogout",
+                                    "onSessionClosed: " + errorResult.errorMessage
+                                )
+                            }
+
+                            override fun onCompleteLogout() {
+                                if (sessionCallback != null) {
+                                    Session.getCurrentSession()
+                                        .removeCallback(sessionCallback)
+                                }
+                                Log.d("logoutlogout", "onCompleteLogout:logout ")
+                            }
+                        })
+                    startActivity(Intent(this@MainActivity, LoginActivity2::class.java))
+                    return@setOnItemSelectedListener true
                 }
                 R.id.mypageFragment -> {
                     searchMyReservation(userId)
+                    return@setOnItemSelectedListener true
                 }
             }
             false
