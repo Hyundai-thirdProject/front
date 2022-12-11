@@ -87,7 +87,7 @@ class CreateQRFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.modify -> {
                 Log.d("ChangeFragment", "FragmentChange 2")
-                activity?.onFragmentChange(0)
+                activity?.onFragmentChangeWithDepartmentStore(0, department_store)
             }
             R.id.cancel -> {
                 activity?.onFragmentChange(1)

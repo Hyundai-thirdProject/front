@@ -55,12 +55,23 @@ class MainActivity : AppCompatActivity() {
         checkAllPermissions()
         //checkDistance()
     }
+    open fun onFragmentChangeWithDepartmentStore(index : Int, department_store: String) {
+        if (index == 0) {
+            val intent = Intent(this@MainActivity, ReservationModifyActivity2::class.java)
+            intent.putExtra("userId", userId)
+            intent.putExtra("depart", department_store)
+            startActivity(intent)
+        }
+    }
 
     // 프래그먼트 안의 버튼 클릭으로 프래그먼트 전환
     open fun onFragmentChange(index: Int) {
         if (index == 0) {
-            supportFragmentManager.beginTransaction().replace(R.id.createQRFrameLayout, HomeFragment())
-                .commit()
+            val intent = Intent(this@MainActivity, ReservationActivity::class.java)
+            intent.putExtra("userId", userId)
+            startActivity(intent)
+//          supportFragmentManager.beginTransaction().replace(R.id.createQRFrameLayout, HomeFragment())
+//              .commit()
         } else if (index == 1) {
             supportFragmentManager.beginTransaction().replace(R.id.createQRFrameLayout, EmptyQRFragment())
                 .commit()
