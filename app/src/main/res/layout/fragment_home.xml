@@ -61,7 +61,7 @@
               />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/login_sign_in_btn"
+                android:id="@+id/yeouido_btn"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
@@ -76,7 +76,7 @@
                 />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/login_sign_in_btn2"
+                android:id="@+id/apgujeong_btn"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
@@ -89,7 +89,7 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/login_sign_in_btn3"
+                android:id="@+id/muyeogsenteo_btn"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"

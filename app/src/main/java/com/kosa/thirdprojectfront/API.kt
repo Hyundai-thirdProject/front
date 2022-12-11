@@ -28,4 +28,8 @@ interface API {
 
     @POST("reservation/cancel")
     fun cancelMyResrvation(@Body userId : String) : Call<String>
+
+    @POST("feedingroom/position")
+    fun getPositionResponse(@Body fno : Int) : Call<FeedingRoomVO>
+
 }

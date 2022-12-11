@@ -295,15 +295,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 거리 구하기
-    fun checkDistance() : Boolean{
+    fun checkDistance(latitude2:Double, longitude2:Double) : Boolean{
         locationProvider = LocationProvider(this@MainActivity)
 
         val latitude:Double = locationProvider.getLocationLatitude() //위도
         val longitude:Double = locationProvider.getLocationLongitude()  //경도
-        Log.d("location","위도 : ${latitude}   경도 : ${longitude}")
+        Log.d("checkDistance() : location","현재위치 위도 : ${latitude}   경도 : ${longitude}")
+        Log.d("checkDistance() : location", "목표위치 위도 : ${latitude2}   경도 : ${longitude2}")
         // db에서 값 가져오기
         //더현대 서울 37.525, 126.928
-        val distance = DistanceManager.getDistance(latitude,longitude,37.525,126.928)
+        val distance = DistanceManager.getDistance(latitude,longitude,latitude2,longitude2)
         if(distance<500){
             // 지점 예약가능
             Toast.makeText(this@MainActivity,
