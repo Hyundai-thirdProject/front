@@ -18,6 +18,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import kotlin.properties.Delegates
 
 
 class ReservationActivity : AppCompatActivity() {
@@ -63,6 +64,8 @@ class ReservationActivity : AppCompatActivity() {
     var numButtons: Array<Button?> = arrayOfNulls<Button>(20)
     var floorButtons: Array<Button?> = arrayOfNulls<Button>(3)
     var expandlayouts: Array<LinearLayout?> = arrayOfNulls<LinearLayout>(3)
+    var fnos: ArrayList<Int> = arrayListOf()
+    var finalfno by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -84,19 +87,33 @@ class ReservationActivity : AppCompatActivity() {
         val selectedtime: TextView = binding.selectedtime
         val selectedfloor: TextView = binding.selectedfloor
 
-        //지점 가져오기와서 textview에 넣기
+        //  지점 선택시 넘겨준 값 받아오기
         val secondIntent = intent
         val departText = secondIntent.getStringExtra("depart")
         val selecteddepart: TextView = binding.selecteddepart//지점 화면에 띄워줌
         selecteddepart.setText(departText)//지점 화면에 띄워줌
+
         val userId = secondIntent.getStringExtra("userId")
         val room_count = secondIntent.getStringExtra("room_count")
+
+        val fno = secondIntent.getStringExtra("fno")
+        val fno2 = secondIntent.getStringExtra("fno2")
+        val fno3 = secondIntent.getStringExtra("fno3")
+
+       //  fno arraylist에 추가
+        fnos.add(fno!!.toInt())
+        if (fno2!!.isNotEmpty() && fno3!!.isNotEmpty()) {
+            fnos.add(fno2!!.toInt())
+            fnos.add(fno3!!.toInt())
+        }
+
+        val int_room_count: Int = room_count!!.toInt()
+
         Log.d("OnCreat" , "유저아이디"+userId+"    방개수 : "+room_count)
 
         // 시간 선택한 내용 띄우기
         for (i in 0 until numButtons.size) {
             numButtons[i] = findViewById<View>(numBtnIDs[i]) as Button
-
         }
 
 //        for (i in 0 until numButtons.size) {
@@ -144,19 +161,21 @@ class ReservationActivity : AppCompatActivity() {
 
 
         // 층 버튼 숫자에 만큼 만들기
-        for (i in 0 until 2) {
+        for (i in 0 until int_room_count) {
             floorButtons[i]!!.visibility = View.VISIBLE
             // 여기에 button text의 내용을 데이터에서 꺼내와서 넣기
             // 여기에 image src을 데이터에서 꺼내와서 넣기
         }
 
 
+
         // 내가 클릭하지 않은 지도 다 접어
         for (i in 0 until floorButtons.size) {
             floorButtons[i]!!.setOnClickListener {
+
+                finalfno = fnos[i]
                 if (expandlayouts[i]!!.visibility == View.VISIBLE) {
                     expandlayouts[i]!!.visibility = View.GONE
-
                 } else {
                     expandlayouts[i]!!.visibility = View.VISIBLE
                     selectedfloor.setText(
@@ -171,8 +190,6 @@ class ReservationActivity : AppCompatActivity() {
                 }
             }
         }
-
-        val fragment_mypage = CreateQRFragment()
 
         binding.reservation.setOnClickListener {
 
@@ -192,25 +209,24 @@ class ReservationActivity : AppCompatActivity() {
             }
 
             val reservationVO = ReservationVO()
-            reservationVO.mid = "mirim0542@nate.com"
-            reservationVO.fno = 2
+            reservationVO.mid = userId.toString()
+            reservationVO.fno = finalfno
             reservationVO.startTime = selectedtime.text.toString()
             Log.d("예약 시작 시간", selectedtime.text.toString())
-            reservationVO.endTime =selectedtime.text.toString()
 
-//            var time = LocalTime.parse(selectedtime.text.toString(), DateTimeFormatter.ofPattern("hh:mm"))
-//            time = time.plusMinutes(30)
-//            println(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")))
-//            reservationVO.endTime =time.toString()
+
+            var strendtiem = selectedtime.text.toString() + ":00"
+            var time = LocalTime.parse(strendtiem)
+            time = time.plusMinutes(30)
+            Log.d("endtime", time.toString())
+            reservationVO.endTime =time.toString()
             reservationVO.status = 0
             ReservationInsert(reservationVO)
-
-
 
             val nextIntent = Intent(this, MainActivity::class.java)
             startActivity(nextIntent)
 
-                    //if 객체가 있으면 fragment로 가고
+            //if 객체가 있으면 fragment로 가고
             // 없으면 홈으로 가세영
 
 
