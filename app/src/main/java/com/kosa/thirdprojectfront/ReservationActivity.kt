@@ -93,7 +93,10 @@ class ReservationActivity : AppCompatActivity() {
         val selecteddepart: TextView = binding.selecteddepart//지점 화면에 띄워줌
         selecteddepart.setText(departText)//지점 화면에 띄워줌
 
-        val userId = secondIntent.getStringExtra("userId")
+        val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
+        val userId = sharedPreference.getString("userId", "").toString()
+
+//        val userId = secondIntent.getStringExtra("userId")
         val room_count = secondIntent.getStringExtra("room_count")
 
         val fno = secondIntent.getStringExtra("fno")
@@ -139,8 +142,18 @@ class ReservationActivity : AppCompatActivity() {
                 //내가 누른 시간을 보내줌
                 val btntext = numButtons[i]?.text.toString()
 
+                val depart = departText.toString()
+                var branch = ""
+
                 feedingReservationVO.start_time = btntext
-                feedingReservationVO.department_store = departText
+                if (depart == "더현대 여의도점") {
+                    branch = "yeoido"
+                } else if (depart == "압구정본점") {
+                    branch = "apgujeong"
+                } else if (depart == "무역센터점") {
+                    branch = "muyeogsenteo"
+                }
+                feedingReservationVO.department_store = branch
 
                 getReservationSelectResponse(feedingReservationVO)
 
@@ -209,7 +222,9 @@ class ReservationActivity : AppCompatActivity() {
             }
 
             val reservationVO = ReservationVO()
-            reservationVO.mid = userId.toString()
+            reservationVO.mid = userId
+            Log.d("예약 시 사용자 아이디", userId.toString())
+
             reservationVO.fno = finalfno
             reservationVO.startTime = selectedtime.text.toString()
             Log.d("예약 시작 시간", selectedtime.text.toString())

@@ -1,6 +1,7 @@
 package com.kosa.thirdprojectfront
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -114,8 +115,14 @@ class LoginActivity2 : AppCompatActivity() {
                             val profile: Profile? = kakaoAccount.profile
 
                             // 로그인이 성공했을 때
+                            val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
+                            val editor  : SharedPreferences.Editor = sharedPreference.edit()
+                            editor.putString("userId", email)
+
+                            editor.commit() // data 저장!
+
                             var intent = Intent(this@LoginActivity2, MainActivity::class.java)
-                            intent.putExtra("email", email)
+//                            intent.putExtra("email", email)
                             startActivity(intent)
                             finish()
 
