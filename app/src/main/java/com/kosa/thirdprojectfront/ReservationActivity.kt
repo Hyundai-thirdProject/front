@@ -14,6 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.annotation.SuppressLint
+import androidx.core.content.ContextCompat.startActivity
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -25,6 +26,9 @@ class ReservationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityReservationBinding
     private lateinit var branchInfo : List<FeedingReservationVO>
+
+    lateinit var userId : String
+    lateinit var reservationVO : ReservationVO
 
     val numBtnIDs: Array<Int> = arrayOf(
         R.id.btnTime1,
@@ -74,6 +78,10 @@ class ReservationActivity : AppCompatActivity() {
         binding = ActivityReservationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
+        userId = sharedPreference.getString("userId", "").toString()
+
+
         // 안보이게 하는 버튼관련 구현
         binding.btnHidden1.setVisibility(View.INVISIBLE);
         binding.btnHidden2.setVisibility(View.INVISIBLE);
@@ -93,8 +101,6 @@ class ReservationActivity : AppCompatActivity() {
         val selecteddepart: TextView = binding.selecteddepart//지점 화면에 띄워줌
         selecteddepart.setText(departText)//지점 화면에 띄워줌
 
-        val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
-        val userId = sharedPreference.getString("userId", "").toString()
 
 //        val userId = secondIntent.getStringExtra("userId")
         val room_count = secondIntent.getStringExtra("room_count")
@@ -103,14 +109,24 @@ class ReservationActivity : AppCompatActivity() {
         val fno2 = secondIntent.getStringExtra("fno2")
         val fno3 = secondIntent.getStringExtra("fno3")
 
-       //  fno arraylist에 추가
-        fnos.add(fno!!.toInt())
-        if (fno2!!.isNotEmpty() && fno3!!.isNotEmpty()) {
+//       //  fno arraylist에 추가
+//        fnos.add(fno!!.toInt())
+//        if (fno2!!.isNotEmpty() && fno3!!.isNotEmpty()) {
+//            fnos.add(fno2!!.toInt())
+//            fnos.add(fno3!!.toInt())
+//        }
+
+
+        val int_room_count: Int = room_count!!.toInt()
+
+        //  fno arraylist에 추가
+        if (int_room_count == 1) {
+            fnos.add(fno!!.toInt())
+        }else{
+            fnos.add(fno!!.toInt())
             fnos.add(fno2!!.toInt())
             fnos.add(fno3!!.toInt())
         }
-
-        val int_room_count: Int = room_count!!.toInt()
 
         Log.d("OnCreat" , "유저아이디"+userId+"    방개수 : "+room_count)
 
@@ -154,7 +170,7 @@ class ReservationActivity : AppCompatActivity() {
                     branch = "muyeogsenteo"
                 }
                 feedingReservationVO.department_store = branch
-
+                Log.d("min2",feedingReservationVO.toString())
                 getReservationSelectResponse(feedingReservationVO)
 
 
@@ -221,7 +237,9 @@ class ReservationActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val reservationVO = ReservationVO()
+
+
+            reservationVO = ReservationVO()
             reservationVO.mid = userId
             Log.d("예약 시 사용자 아이디", userId.toString())
 
@@ -236,7 +254,13 @@ class ReservationActivity : AppCompatActivity() {
             Log.d("endtime", time.toString())
             reservationVO.endTime =time.toString()
             reservationVO.status = 0
-            ReservationInsert(reservationVO)
+
+            // 예약중복체크
+            getCheckReservation(userId)
+
+
+
+
 
             val nextIntent = Intent(this, MainActivity::class.java)
             startActivity(nextIntent)
@@ -249,6 +273,8 @@ class ReservationActivity : AppCompatActivity() {
         }
     }
 
+
+
     fun getReservationSelectResponse(feedingReservationVO: FeedingReservationVO) {
         //url 세팅
         Log.d("feedingReservationVO", feedingReservationVO.department_store.toString())
@@ -256,6 +282,17 @@ class ReservationActivity : AppCompatActivity() {
             feedingReservationVO.department_store.toString(),
             feedingReservationVO.start_time.toString()
         )
+
+            for(k in 0 until 3){
+                if(k==1){
+                    floorButtons[k]?.setBackgroundColor(getColor(R.color.xmasblue))
+                }else{
+                    floorButtons[k]?.setBackgroundColor(getColor(R.color.xmasgreen))
+                }
+                floorButtons[k]?.setClickable(true);
+            }
+
+
 
         Log.d("feedingReservationVO", feedingReservationVO.start_time.toString())
         Thread {
@@ -267,12 +304,15 @@ class ReservationActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful()) { // 응답 잘 받은 경우
                         val reserv : List<FeedingReservationVO>? = response.body()
-                        var room_count : Int
+                        var room_count :Int
                         var floor : Int
                         var user_count : Int
 
 
 
+                        Log.d("min",reserv.toString())
+                        Log.d("min","${reserv?.count()}")
+                        Log.d("min","${reserv?.size}")
                         if (reserv != null) {
                             for (i in 0 until reserv.count()) {
                                 Log.d("RESPONSE: ", reserv[i].toString())
@@ -284,6 +324,18 @@ class ReservationActivity : AppCompatActivity() {
                                 user_count = reserv[i]?.use_count!!
 
 
+
+                                var floorK =floor.toString()+"층"
+                                var floorB = "지하 "+floorK
+                                var idx =0
+                                for(j in 0 until 3 ){
+                                    if(floorK.equals(floorButtons[j]?.text)
+                                        || floorB.equals(floorButtons[j]?.text)){
+                                        idx=j
+                                    }
+                                }
+
+
 //                                for ( i in 0 until floorButtons.size) {
 //                                    Log.d("asdfasdf",item.use_count.toString() )
 //                                    Log.d("qwerqwer",item.room_count.toString() )
@@ -291,8 +343,8 @@ class ReservationActivity : AppCompatActivity() {
                                 if(reserv[i].use_count == reserv[i].room_count){// 각층의 인덱스 값을 비교함
                                     Log.d("user_countC",reserv[i].use_count.toString() )
                                     Log.d("room_countC",reserv[i].room_count.toString() )
-                                    floorButtons[i]?.setBackgroundColor(getColor(R.color.colorGray))
-                                    floorButtons[i]?.setClickable(false);
+                                    floorButtons[idx]?.setBackgroundColor(getColor(R.color.colorGray))
+                                    floorButtons[idx]?.setClickable(false);
                                     Log.d("floorButtons[0]", floorButtons[i]?.text.toString())
                                 }
 
@@ -301,9 +353,6 @@ class ReservationActivity : AppCompatActivity() {
 
                             }
                         }
-
-
-
 
 
 
@@ -328,9 +377,40 @@ class ReservationActivity : AppCompatActivity() {
 
     }
 
+    fun getCheckReservation(userId: String) {
+        //url 세팅
+        val call = RetrofitBuilder.api.getCheckReservation(userId)
+        call.enqueue(object : Callback<String> { // 비동기 방식 통신 메소드
+            override fun onResponse( // 통신에 성공한 경우
+                call: Call<String>, //  Call같은 경우는 명시적으로 Success / Fail을 나눠서 처리할 수 있음
+                response: Response<String> //Response 같은 경우는 서버에서 Status Code를 받아서 케이스를 나눠 처리해줄 수 있음
+            ) {
+                if (response.isSuccessful()) { // 응답 잘 받은 경우
+                    Log.d("RESPONSE: ", response.body().toString())
+                    var check_result = response.body().toString()
+                    if(check_result.equals("success")){
+                        ReservationInsert(reservationVO)
+                    }else{
+                        Toast.makeText(this@ReservationActivity, "중복예약 할 수 없습니다", Toast.LENGTH_SHORT).show()
+                    }
 
+                } else {
+                    // 통신 성공 but 응답 실패
+                    Log.d("RESPONSE", "FAILURE")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                // 통신에 실패한 경우
+                Log.d("CONNECTION FAILURE: ", t.localizedMessage)
+            }
+        })
+
+    }
 
 }
+
+
 
 fun ReservationInsert(reservationVO: ReservationVO) {
     //url 세팅
@@ -355,3 +435,4 @@ fun ReservationInsert(reservationVO: ReservationVO) {
         }
     })
 }
+
