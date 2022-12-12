@@ -375,6 +375,7 @@
                     android:layout_marginRight="10dp"
                     android:background="@color/xmasgreen"
                     android:text="지하1층"
+                    android:textColor="@color/white"
                     android:textSize="20sp" />
 
                 <LinearLayout
@@ -400,6 +401,7 @@
                     android:background="@color/xmasblue"
                     android:text="5층"
                     android:layout_marginBottom="15dp"
+                    android:textColor="@color/white"
                     android:textSize="20sp" />
 
                 <LinearLayout
@@ -424,6 +426,7 @@
                     android:layout_marginRight="10dp"
                     android:background="@color/xmasgreen"
                     android:text="6층"
+                    android:textColor="@color/white"
                     android:textSize="20sp" />
 
                 <LinearLayout
