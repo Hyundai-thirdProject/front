@@ -16,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.kakao.auth.Session
+import com.kakao.network.ErrorResult
+import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.kosa.thirdprojectfront.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -89,25 +93,56 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBottomNavigation() {
 
+        val bundle2 : Bundle = Bundle()
+        Log.d("mainActivity init",userId)
+        bundle2.putString("userId", userId)
+        HomeFragment().arguments=bundle2
+        var homeFragmentWithBundle2 = HomeFragment()
+        homeFragmentWithBundle2.arguments=bundle2
+
         supportFragmentManager.beginTransaction()
-            .replace(R.id.mainFrameLayout, HomeFragment())
+            .replace(R.id.mainFrameLayout,homeFragmentWithBundle2)
             .commitAllowingStateLoss()
 
         binding.navigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
 
+
                 R.id.homeFragment -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainFrameLayout, HomeFragment())
+                        .replace(R.id.mainFrameLayout, homeFragmentWithBundle2)
                         .commitAllowingStateLoss()
                     return@setOnItemSelectedListener true
                 }
 
-                R.id.loginFragment -> {
-                    startActivity(Intent(this@MainActivity,LoginActivity2::class.java))
+                R.id.logoutFragment -> {
+                    val sessionCallback : SessionCallback = SessionCallback()
+
+                    Log.d("logoutlogout", "onCreate:click ")
+                    UserManagement.getInstance()
+                        .requestLogout(object : LogoutResponseCallback() {
+                            override fun onSessionClosed(errorResult: ErrorResult) {
+                                super.onSessionClosed(errorResult)
+                                Log.d(
+                                    "logoutlogout",
+                                    "onSessionClosed: " + errorResult.errorMessage
+                                )
+                            }
+
+                            override fun onCompleteLogout() {
+                                if (sessionCallback != null) {
+                                    Session.getCurrentSession()
+                                        .removeCallback(sessionCallback)
+                                }
+                                Log.d("logoutlogout", "onCompleteLogout:logout ")
+                            }
+                        })
+                    startActivity(Intent(this@MainActivity, LoginActivity2::class.java))
+                    return@setOnItemSelectedListener true
                 }
                 R.id.mypageFragment -> {
                     searchMyReservation(userId)
+                    return@setOnItemSelectedListener true
                 }
             }
             false
@@ -295,15 +330,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 거리 구하기
-    fun checkDistance() : Boolean{
+    fun checkDistance(latitude2:Double, longitude2:Double) : Boolean{
         locationProvider = LocationProvider(this@MainActivity)
 
         val latitude:Double = locationProvider.getLocationLatitude() //위도
         val longitude:Double = locationProvider.getLocationLongitude()  //경도
-        Log.d("location","위도 : ${latitude}   경도 : ${longitude}")
+        Log.d("checkDistance() : location","현재위치 위도 : ${latitude}   경도 : ${longitude}")
+        Log.d("checkDistance() : location", "목표위치 위도 : ${latitude2}   경도 : ${longitude2}")
         // db에서 값 가져오기
         //더현대 서울 37.525, 126.928
-        val distance = DistanceManager.getDistance(latitude,longitude,37.525,126.928)
+        val distance = DistanceManager.getDistance(latitude,longitude,latitude2,longitude2)
         if(distance<500){
             // 지점 예약가능
             Toast.makeText(this@MainActivity,

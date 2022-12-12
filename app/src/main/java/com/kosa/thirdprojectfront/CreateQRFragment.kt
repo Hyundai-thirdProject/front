@@ -46,6 +46,13 @@ class CreateQRFragment : Fragment(), View.OnClickListener {
             start_time = it.getString("start_time").toString()
             floor = it.getString("floor").toString()
             department_store = it.getString("department_store").toString()
+            if (department_store == "yeoido") {
+                department_store = "더현대 서울"
+            } else if (department_store == "apgujeong") {
+                department_store = "현대백화점 압구정본점"
+            } else if (department_store == "muyeogsenteo") {
+                department_store = "현대백화점 무역센터점"
+            }
         }
 
         binding = FragmentCreateQRBinding.inflate(layoutInflater, container, false)

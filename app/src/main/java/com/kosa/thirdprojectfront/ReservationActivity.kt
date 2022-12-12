@@ -65,6 +65,8 @@ class ReservationActivity : AppCompatActivity() {
     var expandlayouts: Array<LinearLayout?> = arrayOfNulls<LinearLayout>(3)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         binding = ActivityReservationBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -87,6 +89,9 @@ class ReservationActivity : AppCompatActivity() {
         val departText = secondIntent.getStringExtra("depart")
         val selecteddepart: TextView = binding.selecteddepart//지점 화면에 띄워줌
         selecteddepart.setText(departText)//지점 화면에 띄워줌
+        val userId = secondIntent.getStringExtra("userId")
+        val room_count = secondIntent.getStringExtra("room_count")
+        Log.d("OnCreat" , "유저아이디"+userId+"    방개수 : "+room_count)
 
         // 시간 선택한 내용 띄우기
         for (i in 0 until numButtons.size) {
