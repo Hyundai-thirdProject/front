@@ -13,6 +13,7 @@ import com.kosa.thirdprojectfront.databinding.ActivityReservationBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.annotation.SuppressLint
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -22,6 +23,7 @@ import java.time.format.DateTimeFormatter
 class ReservationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityReservationBinding
+    private lateinit var branchInfo : List<FeedingReservationVO>
 
     val numBtnIDs: Array<Int> = arrayOf(
         R.id.btnTime1,
@@ -63,6 +65,8 @@ class ReservationActivity : AppCompatActivity() {
     var expandlayouts: Array<LinearLayout?> = arrayOfNulls<LinearLayout>(3)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         binding = ActivityReservationBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -85,6 +89,9 @@ class ReservationActivity : AppCompatActivity() {
         val departText = secondIntent.getStringExtra("depart")
         val selecteddepart: TextView = binding.selecteddepart//지점 화면에 띄워줌
         selecteddepart.setText(departText)//지점 화면에 띄워줌
+        val userId = secondIntent.getStringExtra("userId")
+        val room_count = secondIntent.getStringExtra("room_count")
+        Log.d("OnCreat" , "유저아이디"+userId+"    방개수 : "+room_count)
 
         // 시간 선택한 내용 띄우기
         for (i in 0 until numButtons.size) {
@@ -92,15 +99,34 @@ class ReservationActivity : AppCompatActivity() {
 
         }
 
+//        for (i in 0 until numButtons.size) {
+//            numButtons[i]!!.setOnClickListener {
+//                selectedtime.setText(
+//                    numButtons[i]?.text.toString()
+//                ) //버튼 번호를 받아와 띄움
+//
+//                val time = ReservationVO()
+//                val btntext = numButtons[i]?.text.toString()
+//                time.startTime = btntext
+//
+//            }
+//        }
+
         for (i in 0 until numButtons.size) {
             numButtons[i]!!.setOnClickListener {
                 selectedtime.setText(
                     numButtons[i]?.text.toString()
                 ) //버튼 번호를 받아와 띄움
 
-                val time = ReservationVO()
+                val feedingReservationVO = FeedingReservationVO()
+                //내가 누른 시간을 보내줌
                 val btntext = numButtons[i]?.text.toString()
-                time.startTime = btntext
+
+                feedingReservationVO.start_time = btntext
+                feedingReservationVO.department_store = departText
+
+                getReservationSelectResponse(feedingReservationVO)
+
 
             }
         }
@@ -166,7 +192,7 @@ class ReservationActivity : AppCompatActivity() {
             }
 
             val reservationVO = ReservationVO()
-            reservationVO.mid = "ms"
+            reservationVO.mid = "mirim0542@nate.com"
             reservationVO.fno = 2
             reservationVO.startTime = selectedtime.text.toString()
             Log.d("예약 시작 시간", selectedtime.text.toString())
@@ -191,6 +217,88 @@ class ReservationActivity : AppCompatActivity() {
 
         }
     }
+
+    fun getReservationSelectResponse(feedingReservationVO: FeedingReservationVO) {
+        //url 세팅
+        Log.d("feedingReservationVO", feedingReservationVO.department_store.toString())
+        val call = RetrofitBuilder.api.getReservationSelectResponse(
+            feedingReservationVO.department_store.toString(),
+            feedingReservationVO.start_time.toString()
+        )
+
+        Log.d("feedingReservationVO", feedingReservationVO.start_time.toString())
+        Thread {
+            call.enqueue(object : Callback<List<FeedingReservationVO>> { // 비동기 방식 통신 메소드
+                @SuppressLint("ResourceAsColor")
+                override fun onResponse( // 통신에 성공한 경우
+                    call: Call<List<FeedingReservationVO>>, //  Call같은 경우는 명시적으로 Success / Fail을 나눠서 처리할 수 있음
+                    response: Response<List<FeedingReservationVO>> //Response 같은 경우는 서버에서 Status Code를 받아서 케이스를 나눠 처리해줄 수 있음
+                ) {
+                    if (response.isSuccessful()) { // 응답 잘 받은 경우
+                        val reserv : List<FeedingReservationVO>? = response.body()
+                        var room_count : Int
+                        var floor : Int
+                        var user_count : Int
+
+
+
+                        if (reserv != null) {
+                            for (i in 0 until reserv.count()) {
+                                Log.d("RESPONSE: ", reserv[i].toString())
+                                Log.d("room_count", reserv[i]?.room_count.toString())
+                                Log.d("floor", reserv[i]?.floor.toString())
+
+                                room_count = reserv[i]?.room_count!!
+                                floor = reserv[i]?.floor!!
+                                user_count = reserv[i]?.use_count!!
+
+
+//                                for ( i in 0 until floorButtons.size) {
+//                                    Log.d("asdfasdf",item.use_count.toString() )
+//                                    Log.d("qwerqwer",item.room_count.toString() )
+//                                    Log.d("123123", item.floor.toString())
+                                if(reserv[i].use_count == reserv[i].room_count){// 각층의 인덱스 값을 비교함
+                                    Log.d("user_countC",reserv[i].use_count.toString() )
+                                    Log.d("room_countC",reserv[i].room_count.toString() )
+                                    floorButtons[i]?.setBackgroundColor(getColor(R.color.colorGray))
+                                    floorButtons[i]?.setClickable(false);
+                                    Log.d("floorButtons[0]", floorButtons[i]?.text.toString())
+                                }
+
+                                //}
+
+
+                            }
+                        }
+
+
+
+
+
+
+                    } else {
+                        // 통신 성공 but 응답 실패
+                        Log.d("RESPONSE", "FAILURE")
+                    }
+                }
+
+                override fun onFailure(call: Call<List<FeedingReservationVO>>, t: Throwable) {
+                    // 통신에 실패한 경우
+                    Log.d("CONNECTION FAILURE: ", t.localizedMessage)
+                }
+            })
+            try {
+                Thread.sleep(50)
+            } catch (e : Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+
+
+    }
+
+
+
 }
 
 fun ReservationInsert(reservationVO: ReservationVO) {

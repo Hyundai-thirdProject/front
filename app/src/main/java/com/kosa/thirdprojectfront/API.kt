@@ -2,9 +2,7 @@ package com.kosa.thirdprojectfront
 
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface API {
     @POST("android")
@@ -18,5 +16,20 @@ interface API {
 
     @POST("reservation/search")
     fun searchMyReservation(@Body userId : String) : Call<MyReservationVO>
+
+    @POST("reservation/modify")
+    fun modifyResrevation(@Body reservationVO: ReservationVO) : Call<String>
+
+
+    @GET("reservation/select")// 쿼리 혹은 path
+    fun getReservationSelectResponse(@Query("department_store") department_store : String
+                                     , @Query("start_time") start_time: String)
+            : Call<List<FeedingReservationVO>>
+
+    @POST("reservation/cancel")
+    fun cancelMyResrvation(@Body userId : String) : Call<String>
+
+    @POST("feedingroom/position")
+    fun getPositionResponse(@Body fno : Int) : Call<FeedingRoomVO>
 
 }
