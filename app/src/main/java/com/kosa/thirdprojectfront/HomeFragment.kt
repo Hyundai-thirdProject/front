@@ -159,8 +159,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     // 일단 false로 뜨는 check 테스트를 위해 true로 처리
                     if(fno==1 && !check){
                         intent.putExtra("depart", binding.yeouidoBtn.text.toString())
-                        intent.putExtra("fno2", 2)
-                        intent.putExtra("fno3", 3)
+                        intent.putExtra("fno2", "2")
+                        intent.putExtra("fno3", "3")
                         startActivity(intent)
                     }
                     else if(fno==4 && !check){
