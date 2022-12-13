@@ -6,6 +6,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.integration.android.IntentIntegrator
 
+/**
+ * ScanQR
+ * @author 장주연 *
+ * <pre>
+수정자                      수정내용
+-------------   --------------------------------------------------
+장주연              최초 생성
+ **/
+
 class ScanQR : AppCompatActivity() {
 
     private lateinit var qrScan : IntentIntegrator

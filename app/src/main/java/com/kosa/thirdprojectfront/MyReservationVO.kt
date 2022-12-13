@@ -2,6 +2,15 @@ package com.kosa.thirdprojectfront
 
 import java.util.Date
 
+/**
+ * MyReservationVO
+ * @author 장주연 *
+ * <pre>
+수정자                      수정내용
+-------------   --------------------------------------------------
+장주연              최초 생성
+ **/
+
 class MyReservationVO {
 
     var mid:String? = null
