@@ -4,16 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kosa.thirdprojectfront.databinding.ActivityReservationBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.annotation.SuppressLint
+import android.widget.*
 import androidx.core.content.ContextCompat.startActivity
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -21,7 +18,15 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import kotlin.properties.Delegates
 
-
+/**
+ * ReservationActivity
+ * @author 김민선 *
+ * <pre>
+수정자                      수정내용
+-------------   --------------------------------------------------
+김민선            최초 생성, 예약 insert
+신미림           예약 read
+ **/
 class ReservationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityReservationBinding
@@ -100,22 +105,12 @@ class ReservationActivity : AppCompatActivity() {
         val departText = secondIntent.getStringExtra("depart")
         val selecteddepart: TextView = binding.selecteddepart//지점 화면에 띄워줌
         selecteddepart.setText(departText)//지점 화면에 띄워줌
-
-
-//        val userId = secondIntent.getStringExtra("userId")
+        
         val room_count = secondIntent.getStringExtra("room_count")
 
         val fno = secondIntent.getStringExtra("fno")
         val fno2 = secondIntent.getStringExtra("fno2")
         val fno3 = secondIntent.getStringExtra("fno3")
-
-//       //  fno arraylist에 추가
-//        fnos.add(fno!!.toInt())
-//        if (fno2!!.isNotEmpty() && fno3!!.isNotEmpty()) {
-//            fnos.add(fno2!!.toInt())
-//            fnos.add(fno3!!.toInt())
-//        }
-
 
         val int_room_count: Int = room_count!!.toInt()
 
@@ -128,25 +123,10 @@ class ReservationActivity : AppCompatActivity() {
             fnos.add(fno3!!.toInt())
         }
 
-        Log.d("OnCreat" , "유저아이디"+userId+"    방개수 : "+room_count)
-
         // 시간 선택한 내용 띄우기
         for (i in 0 until numButtons.size) {
             numButtons[i] = findViewById<View>(numBtnIDs[i]) as Button
         }
-
-//        for (i in 0 until numButtons.size) {
-//            numButtons[i]!!.setOnClickListener {
-//                selectedtime.setText(
-//                    numButtons[i]?.text.toString()
-//                ) //버튼 번호를 받아와 띄움
-//
-//                val time = ReservationVO()
-//                val btntext = numButtons[i]?.text.toString()
-//                time.startTime = btntext
-//
-//            }
-//        }
 
         for (i in 0 until numButtons.size) {
             numButtons[i]!!.setOnClickListener {
@@ -155,7 +135,7 @@ class ReservationActivity : AppCompatActivity() {
                 ) //버튼 번호를 받아와 띄움
 
                 val feedingReservationVO = FeedingReservationVO()
-                //내가 누른 시간을 보내줌
+                //선택한 시간을 보내줌
                 val btntext = numButtons[i]?.text.toString()
 
                 val depart = departText.toString()
@@ -172,8 +152,6 @@ class ReservationActivity : AppCompatActivity() {
                 feedingReservationVO.department_store = branch
                 Log.d("min2",feedingReservationVO.toString())
                 getReservationSelectResponse(feedingReservationVO)
-
-
             }
         }
 
@@ -195,6 +173,8 @@ class ReservationActivity : AppCompatActivity() {
             // 여기에 button text의 내용을 데이터에서 꺼내와서 넣기
             // 여기에 image src을 데이터에서 꺼내와서 넣기
         }
+
+                binding.scrollView.fullScroll(ScrollView.FOCUS_DOWN)
 
 
 
@@ -221,9 +201,7 @@ class ReservationActivity : AppCompatActivity() {
         }
 
         binding.reservation.setOnClickListener {
-
-            // 칸이 안채워져있으면 insert못함
-
+            // 칸이 안채워져있으면 insert 못함
             if (selecteddepart.text.toString().length == 0) {
                 Toast.makeText(this, "지점을 선택해주세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -237,8 +215,7 @@ class ReservationActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-
-
+            // 예약 객체를 만들어서 필요한 정보 넘겨주기
             reservationVO = ReservationVO()
             reservationVO.mid = userId
             Log.d("예약 시 사용자 아이디", userId.toString())
@@ -247,7 +224,7 @@ class ReservationActivity : AppCompatActivity() {
             reservationVO.startTime = selectedtime.text.toString()
             Log.d("예약 시작 시간", selectedtime.text.toString())
 
-
+            // 예약 시작 시간 선택시 예약 끝나는 시간 자동 설정
             var strendtiem = selectedtime.text.toString() + ":00"
             var time = LocalTime.parse(strendtiem)
             time = time.plusMinutes(30)
@@ -258,18 +235,8 @@ class ReservationActivity : AppCompatActivity() {
             // 예약중복체크
             getCheckReservation(userId)
 
-
-
-
-
             val nextIntent = Intent(this, MainActivity::class.java)
             startActivity(nextIntent)
-
-            //if 객체가 있으면 fragment로 가고
-            // 없으면 홈으로 가세영
-
-
-
         }
     }
 

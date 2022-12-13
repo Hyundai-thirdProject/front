@@ -9,6 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.kosa.thirdprojectfront.databinding.FragmentEmptyQRBinding
 
+/**
+ * EmptyQRFragment
+ * @author 장주연 *
+ * <pre>
+수정자                      수정내용
+-------------   --------------------------------------------------
+장주연              최초 생성
+ **/
+
 class EmptyQRFragment : Fragment(), View.OnClickListener {
 
     var activity: MainActivity? = null
@@ -36,15 +45,6 @@ class EmptyQRFragment : Fragment(), View.OnClickListener {
 
         imageView.setOnClickListener(this)
         return view
-//        imageView.setOnClickListener(object : View.OnClickListener {
-//            override fun onClick(v: View?) {
-//                when (v?.id) {
-//                    R.id.empty -> {
-//                        activity?.onFragmentChange(0)
-//                    }
-//                }
-//            }
-//        })
     }
 
     override fun onClick(v: View?) {

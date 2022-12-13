@@ -4,6 +4,19 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
+/**
+ * API
+ * @author 신미림, 장주연 *
+ * <pre>
+수정자                      수정내용
+--------------   --------------------------------------------------
+ 신미림, 장주연              최초 생성
+ 신미림, 장주연              android, member/join
+ 신미림                     reservation/select, reservation/cancel
+ 장주연                     reservation/search, reservation/modify
+ 김민찬                     feedingroom/position
+ **/
+
 interface API {
     @POST("android")
     fun getLoginResponse(@Body user : User) : Call<String>

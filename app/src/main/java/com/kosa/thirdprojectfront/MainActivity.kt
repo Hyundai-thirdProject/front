@@ -26,6 +26,16 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
+/**
+ * MainActivity
+ * @author 김민찬
+ * <pre>
+수정자                 수정내용
+--------------   --------------------------------------
+김민찬              gps 이벤트
+
+ **/
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
@@ -41,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     // GPS 서비스 요청 시 필요한 런처
     lateinit var  getGPSPermissionLauncher: ActivityResultLauncher<Intent>
 
-    // 위도경도 - 사용하는 fragment에 선언하기??
+    // 위도경도
     lateinit var locationProvider:LocationProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +79,17 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, ReservationModifyActivity2::class.java)
             intent.putExtra("userId", userId)
             intent.putExtra("depart", department_store)
+
+            if (department_store == "더현대 서울") {
+                intent.putExtra("room_count", "3")
+                intent.putExtra("fno", "1")
+                intent.putExtra("fno2", "2")
+                intent.putExtra("fno3", "3")
+            } else if (department_store == "현대백화점 압구정본점") {
+                intent.putExtra("fno", "4")
+            } else if (department_store == "현대백화점 무역센터점") {
+                intent.putExtra("fno", "5")
+            }
             startActivity(intent)
         }
     }
@@ -89,9 +110,6 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         } else if (index == 3) {
             supportFragmentManager.beginTransaction().replace(R.id.fr_login, HomeFragment())
-                .commit()
-        } else if (index == 4) {
-            supportFragmentManager.beginTransaction().replace(R.id.home_main, ReservationFragment())
                 .commit()
         }
     }
@@ -153,7 +171,10 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.mypageFragment -> {
-                    searchMyReservation(userId)
+                    val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
+                    val uid = sharedPreference.getString("userId", "").toString()
+
+                    searchMyReservation(uid)
                     return@setOnItemSelectedListener true
                 }
             }
@@ -327,7 +348,7 @@ class MainActivity : AppCompatActivity() {
         DialogInterface.OnClickListener{
             dialog, id -> // 확인버튼설정
             val callGPSSettingIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                getGPSPermissionLauncher.launch(callGPSSettingIntent)
+            getGPSPermissionLauncher.launch(callGPSSettingIntent)
         })
         builder.setNegativeButton("취소",
         DialogInterface.OnClickListener{
@@ -351,15 +372,15 @@ class MainActivity : AppCompatActivity() {
         Log.d("checkDistance() : location", "목표위치 위도 : ${latitude2}   경도 : ${longitude2}")
         // db에서 값 가져오기
         //더현대 서울 37.525, 126.928
-        val distance = DistanceManager.getDistance(latitude,longitude,latitude2,longitude2)
+        val distance = DistanceManager.getDistance(37.525,126.928,37.526,126.930)
         if(distance<500){
             // 지점 예약가능
             Toast.makeText(this@MainActivity,
-                "${distance}M 차이납니다",
+                "${distance}M 거리에 있습니다",
                 Toast.LENGTH_SHORT).show()
-            return true
+            return false
+            // 수정필요
         }else{
-            // 예약못하게 막기
             Toast.makeText(this@MainActivity,
                 "${distance}M 차이납니다 예약이 불가능합니다",
                 Toast.LENGTH_SHORT).show()

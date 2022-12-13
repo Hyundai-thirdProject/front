@@ -1,5 +1,13 @@
 package com.kosa.thirdprojectfront
 
+/**
+ * LoginActivity
+ * @author 김민선 *
+ * <pre>
+수정자                      수정내용
+-------------   --------------------------------------------------
+김민선              최초 생성
+ **/
 class ReservationVO {
 
     var rno:Int? = null

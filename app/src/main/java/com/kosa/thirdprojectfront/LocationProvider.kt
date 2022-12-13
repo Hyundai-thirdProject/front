@@ -7,6 +7,16 @@ import android.location.*
 import android.util.Log
 import androidx.core.content.ContextCompat
 
+/**
+ * LocationProvider
+ * @author 김민찬
+ * <pre>
+수정자                 수정내용
+--------------   --------------------------------------
+김민찬              최초 생성
+
+ **/
+
 
 class LocationProvider(val context: Context) {
     // Location 위도, 경도, 고도와 같이 위치에 관련된 정보를 가지고 있는 클래스
@@ -87,6 +97,7 @@ class LocationProvider(val context: Context) {
         return location
     }
 
+    // null 이면 0 반환
     fun getLocationLatitude():Double{
         return location?.latitude?:0.0
     }
