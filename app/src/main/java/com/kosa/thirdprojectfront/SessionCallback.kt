@@ -10,6 +10,14 @@ import com.kakao.usermgmt.response.model.Profile
 import com.kakao.util.OptionalBoolean
 import com.kakao.util.exception.KakaoException
 
+/**
+ * SessionCallback
+ * @author 신미림, 장주연 *
+ * <pre>
+수정자                      수정내용
+-------------   --------------------------------------------------
+신미린, 장주연              최초 생성
+ **/
 
 class SessionCallback : ISessionCallback {
     // 로그인에 성공한 상태
