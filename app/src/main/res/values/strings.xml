@@ -3,7 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="kakao_app_key">9ea2d86288da855b8975b1faf844af63</string>
+    <string name="kakao_app_key">37a93b83462510036fbbcbd0be45aa54</string>
     <string name="naver_client_id">SwnDou0VwZf3WyNKYEEo</string>
     <string name="naver_client_secret">G4tGupN2r0</string>
     <string name="social_login_info_naver_client_name">네이버아이디 로그인</string>

@@ -50,8 +50,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val loginIntent = intent
-        userId = intent.getStringExtra("email").toString()
+//        val loginIntent = intent
+        val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
+        userId = sharedPreference.getString("userId", "").toString()
+
+        Log.d("key-value", "juyeon : " + userId)
+
+//        userId = intent.getStringExtra("email").toString()
         Log.d("userId", userId)
         initBottomNavigation()
 
@@ -93,15 +98,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBottomNavigation() {
 
-        val bundle2 : Bundle = Bundle()
-        Log.d("mainActivity init",userId)
-        bundle2.putString("userId", userId)
-        HomeFragment().arguments=bundle2
-        var homeFragmentWithBundle2 = HomeFragment()
-        homeFragmentWithBundle2.arguments=bundle2
+//        val bundle2 : Bundle = Bundle()
+//        Log.d("mainActivity init",userId)
+//        bundle2.putString("userId", userId)
+
+//        var homeFragmentWithBundle2 = HomeFragment()
+//        homeFragmentWithBundle2.arguments=bundle2
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.mainFrameLayout,homeFragmentWithBundle2)
+            .replace(R.id.mainFrameLayout,HomeFragment())
             .commitAllowingStateLoss()
 
         binding.navigationView.setOnItemSelectedListener { item ->
@@ -110,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.homeFragment -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainFrameLayout, homeFragmentWithBundle2)
+                        .replace(R.id.mainFrameLayout, HomeFragment())
                         .commitAllowingStateLoss()
                     return@setOnItemSelectedListener true
                 }
@@ -137,6 +142,13 @@ class MainActivity : AppCompatActivity() {
                                 Log.d("logoutlogout", "onCompleteLogout:logout ")
                             }
                         })
+                    val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
+                    val editor = sharedPreference.edit()
+
+                    editor.remove("userId")
+                    // 전체 삭제는 editor.clear()
+                    editor.commit()
+
                     startActivity(Intent(this@MainActivity, LoginActivity2::class.java))
                     return@setOnItemSelectedListener true
                 }

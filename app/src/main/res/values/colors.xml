@@ -23,6 +23,7 @@
     <color name ="xmasblue">#233224</color>
     <color name ="xmasgreen">#6F7B54</color>
     <color name ="xmasgold">#C5A880</color>
+    <color name ="nonactive">#00ff0000</color>
 
 
     <!--<color name = "backgroundColor">#F9EEDB</color>
