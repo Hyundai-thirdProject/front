@@ -63,7 +63,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         arguments?.let { 
             userId = it.getString("userId").toString()
         }
-        Log.d("homefragment onCreateView", userId+": 아이디")
+            Log.d("homefragment onCreateView", userId+": 아이디")
 
 
         // HomeFragment의 배너
