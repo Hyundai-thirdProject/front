@@ -38,6 +38,14 @@ import java.security.NoSuchAlgorithmException
 import android.content.Context
 import com.google.android.material.internal.ContextUtils.getActivity
 
+/**
+ * LoginActivity
+ * @author 신미림, 장주연 *
+ * <pre>
+수정자                      수정내용
+-------------   --------------------------------------------------
+신미림, 장주연              최초 생성
+ **/
 
 class LoginActivity : AppCompatActivity() {
 
