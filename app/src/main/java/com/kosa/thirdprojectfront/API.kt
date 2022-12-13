@@ -32,4 +32,9 @@ interface API {
     @POST("feedingroom/position")
     fun getPositionResponse(@Body fno : Int) : Call<FeedingRoomVO>
 
+    @POST("reservation/check")
+    fun getCheckReservation(@Body userId : String) : Call<String>
+
+
+
 }
