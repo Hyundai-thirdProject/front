@@ -4,6 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+/**
+ * LoginActivity
+ * @author 김민선*
+ * <pre>
+수정자                      수정내용
+-------------   --------------------------------------------------
+김민선           최초 생성
+ **/
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

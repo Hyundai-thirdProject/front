@@ -101,9 +101,6 @@ class MainActivity : AppCompatActivity() {
         } else if (index == 3) {
             supportFragmentManager.beginTransaction().replace(R.id.fr_login, HomeFragment())
                 .commit()
-        } else if (index == 4) {
-            supportFragmentManager.beginTransaction().replace(R.id.home_main, ReservationFragment())
-                .commit()
         }
     }
 
