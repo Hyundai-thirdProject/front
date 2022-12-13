@@ -17,6 +17,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * CreateQRFragment
+ * @author 장주연 *
+ * <pre>
+수정자                      수정내용
+-------------   --------------------------------------------------
+장주연              최초 생성
+ **/
+
 class CreateQRFragment : Fragment(), View.OnClickListener {
 
     var activity: MainActivity? = null
@@ -82,8 +91,12 @@ class CreateQRFragment : Fragment(), View.OnClickListener {
         modifyBtn.setOnClickListener(this)
         cancelBtn.setOnClickListener(this)
 
+        //QR 생성하기
+        // BitMatrix, BarcodeFormat, BarcodeEncoder 모두 journeyapps에서 가져온 것.
         val multiFormatWriter = MultiFormatWriter()
         try {
+            // BitMatrix.encode는 contents, format, width, height를 인자로 받는다.
+            // contents: 원하는 내용, format: 바코드 포맷 형식, width: 가로 크기, height: 세로 크기
             val bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 200, 200)
             val barcodeEncoder = BarcodeEncoder()
             val bitmap = barcodeEncoder.createBitmap(bitMatrix)
@@ -134,6 +147,4 @@ class CreateQRFragment : Fragment(), View.OnClickListener {
         })
 
     }
-
-
 }

@@ -16,6 +16,15 @@ import retrofit2.Callback
 import retrofit2.Response
 import kotlin.properties.Delegates
 
+/**
+ * ReservationModifyActivity2
+ * @author 장주연 *
+ * <pre>
+수정자                      수정내용
+-------------   --------------------------------------------------
+장주연              최초 생성
+ **/
+
 class ReservationModifyActivity2 : AppCompatActivity() {
 
     private lateinit var binding: ActivityReservationModifyBinding
@@ -221,7 +230,7 @@ class ReservationModifyActivity2 : AppCompatActivity() {
                 if (response.isSuccessful()) { // 응답 잘 받은 경우
                     Log.d("RESPONSE: ", response.body().toString())
                     val nextIntent = Intent(this@ReservationModifyActivity2, MainActivity::class.java)
-                    nextIntent.putExtra("email", userId)// 홈으로 보내기
+//                    nextIntent.putExtra("email", userId)// 홈으로 보내기
                     startActivity(nextIntent)
                 } else {
                     // 통신 성공 but 응답 실패

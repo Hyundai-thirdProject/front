@@ -27,7 +27,7 @@ import com.kakao.util.exception.KakaoException
  * <pre>
 수정자                      수정내용
 -------------   --------------------------------------------------
-신미린, 장주연              최초 생성
+신미림, 장주연              최초 생성
  **/
 
 class LoginActivity2 : AppCompatActivity() {
