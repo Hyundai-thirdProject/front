@@ -4,16 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kosa.thirdprojectfront.databinding.ActivityReservationBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.annotation.SuppressLint
+import android.widget.*
 import androidx.core.content.ContextCompat.startActivity
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -176,6 +173,8 @@ class ReservationActivity : AppCompatActivity() {
             // 여기에 button text의 내용을 데이터에서 꺼내와서 넣기
             // 여기에 image src을 데이터에서 꺼내와서 넣기
         }
+
+                binding.scrollView.fullScroll(ScrollView.FOCUS_DOWN)
 
 
 

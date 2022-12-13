@@ -2,10 +2,19 @@ package com.kosa.thirdprojectfront
 
 import kotlin.math.*
 
+/**
+ * LocationProvider
+ * @author 김민찬
+ * <pre>
+수정자                수정내용
+--------------   -------------------------
+김민찬              최초 생성
+
+ **/
 
 object DistanceManager {
 
-    // 위도와 경도로 거리 구하기
+    // 두 위치의 위도와 경도로 거리 구하기
     private const val R = 6372.8 * 1000
     fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
         val dLat = Math.toRadians(lat2 - lat1)

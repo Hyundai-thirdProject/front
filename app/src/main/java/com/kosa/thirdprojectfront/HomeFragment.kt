@@ -20,9 +20,15 @@ import com.kosa.thirdprojectfront.databinding.FragmentHomeBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-
-//신미림생성
+/**
+ * HomeFragment
+ * @author 공통
+ * <pre>
+수정자                      수정내용
+--------------   --------------------------------------------------
+신미림, 장주연              최초 생성
+김민찬                 gps 이벤트
+ **/
 class HomeFragment : Fragment(), View.OnClickListener {
 
     var activity: MainActivity? = null
