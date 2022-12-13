@@ -7,12 +7,14 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kosa.thirdprojectfront.databinding.ActivityReservationBinding
 import com.kosa.thirdprojectfront.databinding.ActivityReservationModifyBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.properties.Delegates
 
 class ReservationModifyActivity2 : AppCompatActivity() {
 
@@ -57,11 +59,16 @@ class ReservationModifyActivity2 : AppCompatActivity() {
     var numButtons: Array<Button?> = arrayOfNulls<Button>(20)
     var floorButtons: Array<Button?> = arrayOfNulls<Button>(3)
     var expandlayouts: Array<LinearLayout?> = arrayOfNulls<LinearLayout>(3)
+    var fnos: ArrayList<Int> = arrayListOf()
+    var finalfno by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReservationModifyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
+        userId = sharedPreference.getString("userId", "").toString()
 
         // 안보이게 하는 버튼관련 구현
         binding.btnHidden1.setVisibility(View.INVISIBLE);
@@ -81,6 +88,25 @@ class ReservationModifyActivity2 : AppCompatActivity() {
         val departText = secondIntent.getStringExtra("depart")
         val selecteddepart: TextView = binding.selecteddepart//지점 화면에 띄워줌
         selecteddepart.setText(departText)//지점 화면에 띄워줌
+
+        val room_count = secondIntent.getStringExtra("room_count")
+
+        val fno = secondIntent.getStringExtra("fno")
+        val fno2 = secondIntent.getStringExtra("fno2")
+        val fno3 = secondIntent.getStringExtra("fno3")
+
+        val int_room_count: Int = room_count!!.toInt()
+
+        //  fno arraylist에 추가
+        if (int_room_count == 1) {
+            fnos.add(fno!!.toInt())
+        }else{
+            fnos.add(fno!!.toInt())
+            fnos.add(fno2!!.toInt())
+            fnos.add(fno3!!.toInt())
+        }
+
+        Log.d("Modify" , "유저아이디"+userId+"    방개수 : "+room_count)
 
         // 시간 선택한 내용 띄우기
         for (i in 0 until numButtons.size) {
@@ -114,7 +140,7 @@ class ReservationModifyActivity2 : AppCompatActivity() {
 
 
         // 층 버튼 숫자에 만큼 만들기
-        for (i in 0 until 2) {
+        for (i in 0 until int_room_count) {
             floorButtons[i]!!.visibility = View.VISIBLE
             // 여기에 button text의 내용을 데이터에서 꺼내와서 넣기
             // 여기에 image src을 데이터에서 꺼내와서 넣기
@@ -124,6 +150,8 @@ class ReservationModifyActivity2 : AppCompatActivity() {
         // 내가 클릭하지 않은 지도 다 접어
         for (i in 0 until floorButtons.size) {
             floorButtons[i]!!.setOnClickListener {
+
+                finalfno = fnos[i]
                 if (expandlayouts[i]!!.visibility == View.VISIBLE) {
                     expandlayouts[i]!!.visibility = View.GONE
 
@@ -146,14 +174,28 @@ class ReservationModifyActivity2 : AppCompatActivity() {
 
         binding.reservation.setOnClickListener {
             val modifyIntent = intent
-            userId = intent.getStringExtra("userId").toString()
+//            userId = intent.getStringExtra("userId").toString()
             department_store = intent.getStringExtra("depart").toString()
+
+            if (selecteddepart.text.toString().length == 0) {
+                Toast.makeText(this, "지점을 선택해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (selectedfloor.text.toString().length == 0) {
+                Toast.makeText(this, "층을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (selectedtime.text.toString().length == 0) {
+                Toast.makeText(this, "시간을 선택해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             val reservationVO = ReservationVO()
             reservationVO.mid = userId
-            reservationVO.fno = 2
+            reservationVO.fno = finalfno
             reservationVO.startTime = selectedtime.text.toString()
             Log.d("예약 시작 시간", selectedtime.text.toString())
+
             reservationVO.endTime = selectedtime.text.toString()
             reservationVO.status = 0
             ReservationModify(reservationVO)

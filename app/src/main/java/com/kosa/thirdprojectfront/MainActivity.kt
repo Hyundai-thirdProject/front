@@ -69,6 +69,17 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, ReservationModifyActivity2::class.java)
             intent.putExtra("userId", userId)
             intent.putExtra("depart", department_store)
+
+            if (department_store == "더현대 서울") {
+                intent.putExtra("room_count", "3")
+                intent.putExtra("fno", "1")
+                intent.putExtra("fno2", "2")
+                intent.putExtra("fno3", "3")
+            } else if (department_store == "현대백화점 압구정본점") {
+                intent.putExtra("fno", "4")
+            } else if (department_store == "현대백화점 무역센터점") {
+                intent.putExtra("fno", "5")
+            }
             startActivity(intent)
         }
     }
@@ -153,7 +164,10 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.mypageFragment -> {
-                    searchMyReservation(userId)
+                    val sharedPreference = getSharedPreferences("user", MODE_PRIVATE)
+                    val uid = sharedPreference.getString("userId", "").toString()
+
+                    searchMyReservation(uid)
                     return@setOnItemSelectedListener true
                 }
             }

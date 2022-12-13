@@ -4,7 +4,16 @@ import android.app.Application
 import androidx.annotation.Nullable
 import com.kakao.auth.*
 
+/**
+ * GlobalApplication
+ * @author 신미림, 장주연 *
+ * <pre>
+수정자                      수정내용
+-------------   --------------------------------------------------
+신미린, 장주연              최초 생성
+ **/
 
+//Kakao SDK를 사용하기 위해서 초기화하는 클래스. GlobalApplication 공유 클래스를 통해 앱 수준에서 관리한다.
 class GlobalApplication : Application() {
     override fun onCreate() {
         super.onCreate()
@@ -19,6 +28,7 @@ class GlobalApplication : Application() {
         instance = null
     }
 
+    // kakaoSDKAdapter 클래스는 KakaoAdapter를 상속
     inner class KakaoSDKAdapter : KakaoAdapter() {
         override fun getSessionConfig(): ISessionConfig {
             return object : ISessionConfig {
